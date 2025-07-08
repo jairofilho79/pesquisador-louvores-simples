@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pesquisador de Louvores</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    .topbar {
+      width: 100%;
+      background: #222;
+      color: #fff;
+      padding: 12px 0;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .topbar a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 16px;
+      font-weight: bold;
+      font-size: 1.1em;
+    }
+
+    .topbar a:hover {
+      text-decoration: underline;
+    }
+
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      background-color: #111;
+      overflow-x: hidden;
+      transition: 0.5s;
+      padding-top: 60px;
+    }
+
+    .sidebar a {
+      padding: 8px 8px 8px 32px;
+      text-decoration: none;
+      font-size: 25px;
+      color: #818181;
+      display: block;
+      transition: 0.3s;
+    }
+
+    .sidebar .closebtn {
+      position: absolute;
+      top: 0;
+      right: 25px;
+      font-size: 36px;
+      margin-left: 50px;
+    }
+
+    .openbtn {
+      font-size: 20px;
+      cursor: pointer;
+      background-color: #111;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 2;
+    }
+
+    .search-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 20px;
+      padding: 20px;
+    }
+
+    .search-input {
+      width: 85vw;
+      height: 10vh;
+      padding: 10px;
+      font-size: 18px;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .input-options {
+      width: 85vw;
+      padding: 10px;
+      background-color: #f5f5f5;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+
+    .checkbox-container {
+      margin: 10px 0;
+    }
+
+    @media screen and (max-width: 768px) {
+      .sidebar {
+        padding-top: 15px;
+      }
+
+      .sidebar a {
+        font-size: 18px;
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+      .search-input {
+        height: 8vh;
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- <div id="mySidebar" class="sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a href="#">Opção 1</a>
+    <a href="#">Opção 2</a>
+    <a href="#">Opção 3</a>
+  </div> -->
+
+  <!-- <button class="openbtn" onclick="openNav()">☰</button> -->
+
+  <div class="topbar">
+    <a href="/">Pesquisar Louvores</a>
+    <a href="/add-louvor">Adicionar Louvor</a>
+  </div>
+
+  <div class="search-container">
+    <div style="position: relative; width: 85vw;">
+      <button onclick="clearSearch()" id="searchButtonClear"
+        style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); padding: 8px 15px; background: transparent; color: #111; border: 2px solid #111; border-radius: 5px; cursor: pointer; display: block; z-index: 2;">
+        Limpar
+      </button>
+      <input type="text" id="searchInput" class="search-input" placeholder="Pesquisar louvor..."
+        onkeyup="handleInputValidation(event)" style="padding-left: 90px;" onkeyup="handleInputValidation(event)">
+      <button onclick="handleSearch()" id="searchButton"
+        style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); padding: 8px 15px; background: transparent; color: #111; border: 2px solid #111; border-radius: 5px; cursor: pointer; display: none;">
+        Pesquisar
+      </button>
+      <button disabled id="searchButtonDisabled"
+        style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); padding: 8px 15px; background: transparent; color: #777; border: 2px solid #999; border-radius: 5px; cursor: not-allowed; display: block;">
+        Digite...
+      </button>
+    </div>
+
+    <!-- <div class="input-options">
+      <label class="checkbox-container">
+        <input type="checkbox" id="searchTitle" onchange="searchTitleHandler(event)"> Título
+      </label>
+      <label class="checkbox-container">
+        <input type="checkbox" id="searchNumberCol" onchange="searchNumberColHandler(event)"> Número
+      </label>
+    </div> -->
+  </div>
+
+  <div id="searchResults"></div>
+  <script src="main.js"></script>
+</body>
+
+</html>
