@@ -23,21 +23,17 @@ const clearSearch = () => {
 }
 
 // New handleSearch: calls the API endpoint
-const handleSearch = async () => {
+const handleSearch = () => {
   const search = document.getElementById("searchInput").value.trim();
-  if (!search) {
-    makeHTMLSearchResponse([]);
-    return;
+  if(!isNaN(Number(search))) {
+    makeHTMLSearchResponse(louvores.filter(louvor => Number(louvor.numero) === Number(search)));
+    return
   }
-  try {
-    const response = await fetch(`/api/louvores/search?q=${encodeURIComponent(search)}`);
-    if (!response.ok) throw new Error('Erro ao buscar louvores');
-    const louvores = await response.json();
-    makeHTMLSearchResponse(louvores);
-  } catch (err) {
-    makeHTMLSearchResponse([]);
-    alert('Erro ao buscar louvores');
-  }
+  const searchT = normalizeSearchString(search);
+  makeHTMLSearchResponse(louvores.filter(louvor => {
+    const titulo = normalizeSearchString(louvor.nome);
+    return titulo.includes(searchT);
+  }));
 }
 
 const normalizeSearchString = (str) => {
