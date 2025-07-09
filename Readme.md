@@ -20,5 +20,9 @@ Fontes:
 # Em breve!
 Uma versão mais completa e multifuncional dessa aplicação.
 
-# Inicia o servidor HTTP localmente (Dev)
+# DEV
+## Inicia o servidor HTTP localmente (Dev)
 http-server . -c-1 --fallback index.html
+
+# Script para atualizar metadados de pesquisa dos louvores
+node scripts/louvoresMapper.js
