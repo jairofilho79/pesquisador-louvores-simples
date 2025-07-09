@@ -1,0 +1,90 @@
+.search-option-louvor-card {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: 1px solid #e9ecef;
+    max-width: 45vw;
+    min-width: 45vw;
+    margin: 0 auto;
+}
+
+.search-option-louvor-card:hover {
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.14);
+}
+
+.search-option-louvor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    gap: 1rem;
+}
+
+.search-option-louvor-title {
+    font-size: 1.4rem;
+    color: #2c3e50;
+    margin: 0;
+    flex: 1;
+    line-height: 1.3;
+}
+
+.search-option-go-link-btn {
+    background: var(--btn-background-color);
+    border: none;
+    border-radius: 0.3rem;
+    padding: 0.3rem 0.6rem;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: background 0.2s;
+    color: var(--gold-color);
+    font-family: 'Open Sans', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    width: 1.8em;
+    height: 1.8em;
+}
+
+.search-option-louvor-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+}
+
+.search-option-louvor-numero {
+    font-weight: 600;
+    color: #2c3e50;
+    background: #e3f2fd;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 1.1rem;
+}
+
+.search-option-louvor-classificacao,
+.search-option-louvor-categoria {
+    font-size: 1.1rem;
+    background: #f5f7fa;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    width: fit-content;
+}
+
+@media (max-width: 960px) {
+    .search-option-louvor-card {
+        padding: 1rem;
+        min-width: 80vw;
+        max-width: 80vw;
+    }
+}
+
+@media (max-width: 600px) {
+    .search-option-louvor-header {
+        font-size: 1.3rem;
+        flex-direction: column;
+    }
+}
