@@ -1,0 +1,25 @@
+Alguns detalhes a serem corrigidos e orientados a respeito do material:
+
+** Vozes: PREFIRAM OS ÁUDIOS EM MIDI POIS ESTÃO DE ACORDO COM A PARTITURA.
+
+- Áudios gerais: Servirão apenas para acompanhamento. Deve-se tomar 
+cuidado com diversos pontos onde divergem da partitura que utilizaremos.
+
+- Vozes: Compasso 18: faremos a separação "Tu-a" e não "tua".Compasso 47, semelhantemente 
+faremos separado o "e a" em vez de "ea" do áudio do GL de Maanaim.
+
+- Tenor: No compasso 21, faremos a separação dos fonemas: "Ah As..." e não os 
+uniremos conforme ouvimos no áudio. Existe um erro nos compassos 63-68 do áudio do tenor. 
+Seguiremos a partitura, que diz: "Lou-va-rei, lou...Te lou-va-rei".
+
+- Baixo: No áudio do baixo existe um erro no compasso 48 onde
+não deverá ser cantado "Luz são i-guais" como está no áudio e sim "Luz (2 tempos) i-guais".
+
+** Instrumentos:
+
+- Sax Soprano: Executará a partitura de clarinete.
+
+- Trombone: Executará a partitura de Fagote (Bassoon).
+
+- Piano: A parte de piano será seguida apenas para o piano, não devendo ser usada 
+para vozes, apesar de também possuir parte para tais. 
