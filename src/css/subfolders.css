@@ -1,0 +1,353 @@
+/* Estilos para sistema de subpastas recursivas */
+
+/* Container principal de arquivos e subpastas */
+.file-options-container {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.file-options-container.expanded {
+    max-height: none;  /* Permitir altura dinâmica */
+    height: auto;      /* Altura automática */
+    opacity: 1;
+    padding: 15px;
+    overflow: visible;  /* Permitir que o conteúdo seja visível */
+}
+
+/* Badge de contagem de arquivos */
+.file-count-badge {
+    background: rgba(44, 62, 80, 0.8);  /* Fundo escuro */
+    color: #fff;  /* Texto branco para contraste */
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    margin-left: 10px;
+    font-weight: 500;
+}
+
+/* Seções de arquivos */
+.file-section {
+    margin-bottom: 10px;
+}
+
+.file-section-title {
+    color: #2c3e50;  /* Cor escura para contraste */
+    font-weight: 600;
+    font-size: 0.9em;
+    margin-bottom: 8px;
+    opacity: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Seções de subpastas */
+.subfolder-section {
+    margin-bottom: 8px;
+    border-left: 2px solid rgba(255, 255, 255, 0.1);
+    padding-left: 10px;
+}
+
+.subfolder-section-level-1 {
+    margin-left: 10px;
+}
+
+.subfolder-section-level-2 {
+    margin-left: 20px;
+}
+
+.subfolder-section-level-3 {
+    margin-left: 30px;
+}
+
+/* Cabeçalho de subpasta */
+.subfolder-header {
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+    cursor: pointer;
+    color: #2c3e50;  /* Cor escura para contraste */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 5px;
+    transition: background-color 0.2s ease;
+}
+
+.subfolder-header:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.subfolder-toggle {
+    margin-right: 8px;
+    font-size: 0.8em;
+    transition: transform 0.2s ease;
+    color: #ffd700;
+    font-weight: bold;
+}
+
+.subfolder-toggle.expanded {
+    transform: rotate(90deg);
+}
+
+.subfolder-title {
+    font-weight: 500;
+    flex-grow: 1;
+    font-size: 0.9em;
+}
+
+.subfolder-file-count {
+    opacity: 0.7;
+    font-size: 0.8em;
+    margin-left: 5px;
+}
+
+/* Conteúdo de subpasta */
+.subfolder-content {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: all 0.25s ease;
+    padding-left: 20px;
+}
+
+.subfolder-content.expanded {
+    max-height: none;  /* Permitir altura dinâmica */
+    height: auto;      /* Altura automática */
+    opacity: 1;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    overflow: visible;  /* Permitir que o conteúdo seja visível */
+}
+
+/* Itens de arquivo */
+.file-option-item {
+    display: flex;
+    align-items: center;
+    padding: 7px 11px;  /* Aumentado de 6px 10px para 7px 11px (+10%) */
+    margin: 2px 0;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    color: #2c3e50;  /* Cor escura para contraste */
+    font-size: 0.94em;  /* Aumentado de 0.85em para 0.94em (+10%) */
+    min-height: 38px;  /* Altura mínima para melhor toque em dispositivos móveis */
+}
+
+.file-option-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateX(5px);
+}
+
+/* Níveis de indentação para arquivos */
+.file-option-level-0 {
+    margin-left: 0;
+}
+
+.file-option-level-1 {
+    margin-left: 10px;
+}
+
+.file-option-level-2 {
+    margin-left: 20px;
+}
+
+.file-option-level-3 {
+    margin-left: 30px;
+}
+
+/* Ícones de arquivo */
+.file-option-icon {
+    margin-right: 8px;
+    font-size: 1.1em;
+    width: 20px;
+    text-align: center;
+}
+
+.file-option-name {
+    flex-grow: 1;
+    word-break: break-word;
+    line-height: 1.2;
+}
+
+/* Tipos de arquivo */
+.file-type-pdf .file-option-icon {
+    color: #ff6b6b;
+}
+
+.file-type-audio .file-option-icon {
+    color: #4ecdc4;
+}
+
+/* Indicadores de expansão melhorados */
+.expand-indicator {
+    margin-left: auto;
+    font-size: 0.9em;
+    transition: transform 0.2s ease;
+    color: #ffd700;
+    font-weight: bold;
+}
+
+.expand-indicator.expanded {
+    transform: rotate(180deg);
+}
+
+/* Compatibilidade com sistema antigo */
+.pdf-options-list {
+    /* Redirecionar para novo sistema */
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.pdf-options-list.expanded {
+    max-height: none;  /* Mudança: permitir altura dinâmica */
+    height: auto;      /* Mudança: altura automática */
+    opacity: 1;
+    padding: 15px;
+    overflow-y: visible;  /* Mudança: permitir scroll se necessário */
+}
+
+.pdf-option-item {
+    /* Estilo para itens de PDF antigos */
+    display: flex;
+    align-items: center;
+    padding: 7px 11px;  /* Aumentado de 6px 10px para 7px 11px (+10%) */
+    margin: 2px 0;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    color: #2c3e50;  /* Mudança: cor escura para contraste */
+    font-size: 0.94em;  /* Aumentado de 0.85em para 0.94em (+10%) */
+    min-height: 38px;  /* Altura mínima para melhor toque em dispositivos móveis */
+}
+
+.pdf-option-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateX(5px);
+}
+
+.pdf-option-icon {
+    margin-right: 8px;
+    font-size: 1.1em;
+    width: 20px;
+    text-align: center;
+    color: #ff6b6b;
+}
+
+.pdf-option-name {
+    flex-grow: 1;
+    word-break: break-word;
+    line-height: 1.2;
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 768px) {
+    .file-options-container.expanded {
+        max-height: 400px;
+        padding: 10px;
+    }
+    
+    .subfolder-content.expanded {
+        max-height: 250px;
+    }
+    
+    .file-option-item {
+        padding: 9px;  /* Aumentado de 8px para 9px (+10%) */
+        font-size: 0.99em;  /* Aumentado de 0.9em para 0.99em (+10%) */
+        min-height: 42px;  /* Altura mínima para melhor toque em dispositivos móveis */
+    }
+    
+    .subfolder-section-level-1,
+    .subfolder-section-level-2,
+    .subfolder-section-level-3 {
+        margin-left: 5px;
+    }
+    
+    .file-option-level-1,
+    .file-option-level-2,
+    .file-option-level-3 {
+        margin-left: 5px;
+    }
+}
+
+/* Animações suaves */
+.file-option-item,
+.subfolder-header {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Estados especiais */
+.search-option-louvor-card[data-subfolders-only="true"] {
+    border-left: 4px solid #ffd700;
+}
+
+.search-option-louvor-card[data-multiple-files="true"] {
+    border-left: 4px solid #4ecdc4;
+}
+
+/* Melhorias na hierarquia visual */
+.subfolder-section {
+    position: relative;
+}
+
+.subfolder-section::before {
+    content: '';
+    position: absolute;
+    left: -2px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, 
+        rgba(255, 215, 0, 0.5) 0%, 
+        rgba(255, 215, 0, 0.1) 100%);
+}
+
+/* Efeito de destaque ao passar o mouse */
+.file-option-item:hover .file-option-icon {
+    transform: scale(1.2);
+}
+
+.subfolder-header:hover .subfolder-toggle {
+    transform: scale(1.1);
+}
+
+.subfolder-header:hover .subfolder-toggle.expanded {
+    transform: scale(1.1) rotate(90deg);
+}
+
+/* Altura dinâmica para cards expandidos */
+.search-option-louvor-card[data-multiple-files="true"] {
+    height: auto;
+    min-height: auto;
+    overflow: visible;
+}
+
+.search-option-louvor-card[data-subfolders-only="true"] {
+    height: auto;
+    min-height: auto;
+    overflow: visible;
+}
+
+/* Garantir que cards expandidos tenham altura dinâmica */
+.search-option-louvor-card:has(.file-options-container.expanded) {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+}
+
+/* Fallback para navegadores que não suportam :has */
+.search-option-louvor-card.card-expanded {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+}

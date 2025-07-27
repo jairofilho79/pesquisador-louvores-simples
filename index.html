@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coletânea Digital</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="src/css/pesquisador-simples.css">
+    <link rel="stylesheet" href="src/css/search.css">
+    <link rel="stylesheet" href="src/css/fonts.css">
+    <link rel="stylesheet" href="src/css/searchOptions.css">
+    <link rel="stylesheet" href="src/css/searchOption.css">
+    <link rel="stylesheet" href="src/css/subfolders.css">
+    <link rel="stylesheet" href="src/css/filters.css">
+    <link rel="stylesheet" href="src/css/codeMode.css">
+    <link rel="stylesheet" href="src/css/playlistManager.css">
+</head>
+
+<body>
+    <!-- Loading indicator -->
+    <div id="simple-loader" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(52, 58, 64, 0.95); display: flex; align-items: center; justify-content: center; z-index: 10000; backdrop-filter: blur(5px);">
+        <div style="text-align: center; color: white;">
+            <div style="width: 48px; height: 48px; margin: 0 auto 1rem; border: 4px solid rgba(255, 255, 255, 0.3); border-left: 4px solid #fff; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+            <h3 style="margin: 0 0 1rem; font-size: 1.5rem;">Carregando Coletânea Digital</h3>
+            <p id="loading-message" style="margin: 0; opacity: 0.9;">Preparando aplicação...</p>
+        </div>
+    </div>
+
+    <!-- Pesquisador Simples Component -->
+    <div id="pesquisador-simples" style="opacity: 0.3; pointer-events: none;">
+        <div class="pesquisador-simples-container">
+            <h1 class="pesquisador-simples-title">COLETÂNEA DIGITAL</h1>
+            <!-- Search Component -->
+            <div id="search">
+                <div class="search-container">
+                    <input type="text" id="search-input" placeholder="Digite sua busca..." class="search-input" />
+                    <div class="search-button-row">
+                        <button id="search-clear-btn" class="search-limpar-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+                                <polyline points="3,6 5,6 21,6"></polyline>
+                                <path d="m19,6v14a2,2 0 0,1 -2,2H7a2,2 0 0,1 -2,-2V6m3,0V4a2,2 0 0,1 2,-2h4a2,2 0 0,1 2,2v2"></path>
+                                <line x1="10" y1="11" x2="10" y2="17"></line>
+                                <line x1="14" y1="11" x2="14" y2="17"></line>
+                            </svg>
+                            Limpar
+                        </button>
+                        <button id="search-submit-btn" class="search-achar-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.35-4.35"></path>
+                            </svg>
+                            Pesquisar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search Options Component -->
+            <div id="search-options">
+                <div class="search-options-container">
+                    <!-- Dynamic content will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Template for search options -->
+    <template id="search-option-template">
+        <div class="search-option-louvor-card">
+            <div class="search-option-louvor-header">
+                <h3 class="search-option-louvor-title" data-field="nome"></h3>
+            </div>
+            <div class="search-option-louvor-info">
+                <div class="search-option-louvor-numero" data-field="numero"></div>
+                <div class="search-option-louvor-classificacao" data-field="classificacao"></div>
+                <div class="search-option-louvor-colecao" data-field="colecao"></div>
+                <div class="search-option-louvor-categoria" data-field="categoria"></div>
+            </div>
+        </div>
+    </template>
+
+    <style>
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+
+    <!-- Carregamento simplificado e confiável -->
+    <script>
+        // Sistema simples de carregamento
+        class SimpleLoader {
+            constructor() {
+                this.loadingMessage = document.getElementById('loading-message');
+                this.loader = document.getElementById('simple-loader');
+                this.mainContent = document.getElementById('pesquisador-simples');
+            }
+
+            updateMessage(message) {
+                if (this.loadingMessage) {
+                    this.loadingMessage.textContent = message;
+                }
+                console.log(`[SimpleLoader] ${message}`);
+            }
+
+            loadScript(src) {
+                return new Promise((resolve, reject) => {
+                    const script = document.createElement('script');
+                    script.src = src;
+                    script.onload = resolve;
+                    script.onerror = () => reject(new Error(`Erro ao carregar ${src}`));
+                    document.head.appendChild(script);
+                });
+            }
+
+            async waitForComponents() {
+                return new Promise((resolve) => {
+                    let attempts = 0;
+                    const maxAttempts = 50;
+
+                    const check = () => {
+                        attempts++;
+                        
+                        const ready = window.louvoresAssets2ComCodigos && 
+                                    window.searchComponent && 
+                                    window.searchOptionsComponent && 
+                                    window.searchOptionComponent;
+
+                        if (ready) {
+                            resolve();
+                        } else if (attempts >= maxAttempts) {
+                            resolve(); // Continue mesmo se não estiver 100% pronto
+                        } else {
+                            setTimeout(check, 100);
+                        }
+                    };
+
+                    check();
+                });
+            }
+
+            async load() {
+                try {
+                    // 1. Carregar dados dos louvores
+                    this.updateMessage('Carregando dados dos louvores...');
+                    await this.loadScript('assets2-louvores-com-codigos.js');
+                    await new Promise(resolve => setTimeout(resolve, 100));
+
+                    // 2. Carregar componentes
+                    this.updateMessage('Carregando componentes de busca...');
+                    await this.loadScript('src/js/searchComponent.js');
+                    await new Promise(resolve => setTimeout(resolve, 100));
+
+                    await this.loadScript('src/js/searchOptionsComponent.js');
+                    await new Promise(resolve => setTimeout(resolve, 100));
+
+                    await this.loadScript('src/js/searchOptionComponent.js');
+                    await new Promise(resolve => setTimeout(resolve, 100));
+
+                    await this.loadScript('src/js/filterComponent.js');
+                    await new Promise(resolve => setTimeout(resolve, 100));
+
+                    // 2.5. Carregar componentes de códigos únicos
+                    this.updateMessage('Carregando sistema de códigos únicos...');
+                    await this.loadScript('src/js/urlCodeManager.js');
+                    await new Promise(resolve => setTimeout(resolve, 100));
+
+                    await this.loadScript('src/js/playlistManager.js');
+                    await new Promise(resolve => setTimeout(resolve, 100));
+
+                    // 3. Inicializar componentes
+                    this.updateMessage('Inicializando aplicação...');
+                    await this.loadScript('src/js/initializeComponents.js');
+                    await new Promise(resolve => setTimeout(resolve, 200));
+
+                    // 4. Aguardar inicialização completa
+                    this.updateMessage('Finalizando...');
+                    await this.waitForComponents();
+
+                    // 5. Ativar interface
+                    this.activate();
+
+                } catch (error) {
+                    console.error('Erro no carregamento:', error);
+                    this.updateMessage('Erro no carregamento. Recarregue a página.');
+                }
+            }
+
+            activate() {
+                // Esconder loader
+                if (this.loader) {
+                    this.loader.style.opacity = '0';
+                    this.loader.style.transition = 'opacity 0.3s ease';
+                    setTimeout(() => {
+                        this.loader.style.display = 'none';
+                    }, 300);
+                }
+
+                // Ativar conteúdo principal
+                if (this.mainContent) {
+                    this.mainContent.style.opacity = '1';
+                    this.mainContent.style.pointerEvents = 'auto';
+                    this.mainContent.style.transition = 'opacity 0.3s ease';
+                }
+
+                // Focar no campo de busca
+                setTimeout(() => {
+                    const searchInput = document.getElementById('search-input');
+                    if (searchInput) {
+                        searchInput.focus();
+                    }
+                }, 500);
+
+                console.log('🎉 Coletânea Digital pronta para uso!');
+            }
+        }
+
+        // Inicializar quando DOM estiver pronto
+        document.addEventListener('DOMContentLoaded', () => {
+            const loader = new SimpleLoader();
+            loader.load();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,14 @@
+# Cache busting para assets2-louvores.js
+<FilesMatch "assets2-louvores\.js">
+    # Permitir cache apenas se tiver parâmetro de versão
+    SetEnvIf Query_String "v=.+" HAS_VERSION
+    Header set Cache-Control "public, max-age=31536000" env=HAS_VERSION
+    Header set Cache-Control "no-cache, no-store, must-revalidate" env=!HAS_VERSION
+</FilesMatch>
+
+# Cache para assets2-version.json (sempre verificar)
+<FilesMatch "assets2-version\.json">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+</FilesMatch>

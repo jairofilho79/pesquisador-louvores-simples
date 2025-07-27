@@ -1,0 +1,17 @@
+{
+  "name": "pesquisador-louvores-simples",
+  "version": "2.0.0",
+  "description": "Sistema de busca de louvores com mapeamento automático",
+  "scripts": {
+    "dev": "http-server . -c-1 --fallback index.html -o",
+    "build": "cd scripts && node build-deploy.js",
+    "map-assets": "cd scripts && node assetsFolderMapper.js && node generateDeterministicCodes.js",
+    "test": "http-server . -c-1 --fallback test-asset-mapper.html -o"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "keywords": ["louvores", "icm", "partituras", "busca"],
+  "author": "Jairo Filho",
+  "license": "MIT"
+}

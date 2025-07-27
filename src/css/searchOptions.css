@@ -1,0 +1,58 @@
+.search-options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    overflow: visible; /* Permite que os cards expandam */
+    align-items: center; /* Centraliza os cards como o input */
+}
+
+/* Responsividade do container */
+@media screen {
+    .search-options-container {
+        overflow: visible !important;
+        position: relative;
+    }
+}
+
+@media (max-width: 960px) {
+    .search-options-container {
+        gap: 1.5rem; /* Mais espaço entre cards em tablets */
+    }
+}
+
+@media (max-width: 600px) {
+    .search-options-container {
+        gap: 1rem;
+        padding: 0 0.5rem;
+    }
+}
+
+/* Aplicar os mesmos estilos para o container do modo código */
+.code-mode-items-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    overflow: visible; /* Permite que os cards expandam */
+    align-items: center; /* Centraliza os cards como o input */
+}
+
+/* Responsividade do container do modo código */
+@media screen {
+    .code-mode-items-container {
+        overflow: visible !important;
+        position: relative;
+    }
+}
+
+@media (max-width: 960px) {
+    .code-mode-items-container {
+        gap: 1.5rem; /* Mais espaço entre cards em tablets */
+    }
+}
+
+@media (max-width: 600px) {
+    .code-mode-items-container {
+        gap: 1rem;
+        padding: 0 0.5rem;
+    }
+}

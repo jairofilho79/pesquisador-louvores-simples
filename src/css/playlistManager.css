@@ -1,0 +1,448 @@
+/* CSS para Playlist Manager */
+
+/* Container principal */
+.playlist-manager {
+    position: relative;
+    z-index: 1000;
+}
+
+/* Botão toggle */
+.playlist-toggle-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 8px rgba(0,123,255,0.3);
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1001;
+}
+
+.playlist-toggle-btn:hover {
+    background: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,123,255,0.4);
+}
+
+.playlist-count {
+    background: rgba(255,255,255,0.9);
+    color: #007bff;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+    min-width: 20px;
+    text-align: center;
+}
+
+/* Painel da playlist */
+.playlist-panel {
+    position: fixed;
+    top: 70px;
+    right: 20px;
+    width: 350px;
+    max-height: 500px;
+    background: white;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    transform: translateX(100%);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+    overflow: hidden;
+}
+
+.playlist-panel.show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+/* Header do painel */
+.playlist-header {
+    background: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.playlist-header h3 {
+    margin: 0;
+    font-size: 16px;
+    color: #495057;
+}
+
+.playlist-close-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #6c757d;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+.playlist-close-btn:hover {
+    background: #e9ecef;
+    color: #495057;
+}
+
+/* Conteúdo do painel */
+.playlist-content {
+    padding: 20px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* Input do nome */
+.playlist-name-input {
+    margin-bottom: 15px;
+}
+
+.playlist-name-input input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.2s;
+}
+
+.playlist-name-input input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+}
+
+/* Lista de itens */
+.playlist-items {
+    margin-bottom: 20px;
+}
+
+.empty-playlist {
+    text-align: center;
+    padding: 30px 10px;
+    color: #6c757d;
+}
+
+.empty-playlist p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.empty-playlist .hint {
+    font-size: 12px;
+    color: #adb5bd;
+}
+
+/* Item da playlist */
+.playlist-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #f1f3f4;
+    transition: background 0.2s;
+}
+
+.playlist-item:hover {
+    background: #f8f9fa;
+}
+
+.playlist-item:last-child {
+    border-bottom: none;
+}
+
+.playlist-item-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.playlist-item-code {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    font-weight: bold;
+    background: #e9ecef;
+    color: #495057;
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-right: 8px;
+}
+
+.playlist-item-name {
+    font-size: 13px;
+    color: #495057;
+    display: block;
+    margin-top: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.playlist-item-remove {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    color: #dc3545;
+    font-size: 12px;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    margin-left: 8px;
+}
+
+.playlist-item-remove:hover {
+    background: #f5c6cb;
+    color: #721c24;
+}
+
+/* Ações da playlist */
+.playlist-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.playlist-action-btn {
+    flex: 1;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.playlist-action-btn.share {
+    background: #28a745;
+    color: white;
+}
+
+.playlist-action-btn.share:hover:not(:disabled) {
+    background: #218838;
+}
+
+.playlist-action-btn.clear {
+    background: #dc3545;
+    color: white;
+}
+
+.playlist-action-btn.clear:hover:not(:disabled) {
+    background: #c82333;
+}
+
+.playlist-action-btn.undo {
+    background: #6c757d;
+    color: white;
+    animation: countdown-pulse 1s infinite alternate;
+}
+
+.playlist-action-btn.undo:hover:not(:disabled) {
+    background: #5a6268;
+}
+
+@keyframes countdown-pulse {
+    from {
+        background: #dc3545;
+        transform: scale(1);
+    }
+    to {
+        background: #6c757d;
+        transform: scale(1.02);
+    }
+}
+
+.playlist-action-btn:disabled {
+    background: #e9ecef;
+    color: #6c757d;
+    cursor: not-allowed;
+}
+
+/* Botões de adicionar à playlist (nos resultados) */
+.add-to-playlist-btn {
+    background: #17a2b8;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.2s;
+    min-width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    z-index: 15 !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.add-to-playlist-btn svg {
+    width: 16px;
+    height: 16px;
+    pointer-events: none;
+}
+
+.add-to-playlist-btn:hover {
+    background: #138496;
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.add-to-playlist-btn.added {
+    background: #28a745;
+}
+
+.add-to-playlist-btn.added:hover {
+    background: #218838;
+}
+
+/* Garantir que os cards tenham position relative */
+.search-option-louvor-card,
+.master-file-section {
+    position: relative !important;
+}
+
+/* Melhorar visibility em cards expandidos */
+.card-expanded .add-to-playlist-btn,
+.expanded .add-to-playlist-btn {
+    z-index: 25 !important;
+}
+
+/* Feedback */
+.playlist-feedback {
+    animation: slideUpFade 0.3s ease-out;
+}
+
+@keyframes slideUpFade {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .playlist-toggle-btn {
+        top: 10px;
+        right: 10px;
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+    
+    .playlist-panel {
+        top: 60px;
+        right: 10px;
+        left: 10px;
+        width: auto;
+        max-width: none;
+    }
+    
+    .playlist-content {
+        padding: 15px;
+    }
+    
+    .playlist-actions {
+        flex-direction: column;
+    }
+    
+    .playlist-item-name {
+        font-size: 12px;
+    }
+    
+    .playlist-item-code {
+        font-size: 10px;
+    }
+}
+
+/* Animação de entrada para novos itens */
+.playlist-item.new-item {
+    animation: slideInItem 0.3s ease-out;
+}
+
+@keyframes slideInItem {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Scrollbar personalizada */
+.playlist-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.playlist-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.playlist-content::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+.playlist-content::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* Estados especiais */
+.playlist-manager.full .playlist-toggle-btn {
+    background: #28a745;
+}
+
+.playlist-manager.full .playlist-count {
+    color: #28a745;
+}
+
+/* Overlay para mobile */
+@media (max-width: 768px) {
+    .playlist-panel.show::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.3);
+        z-index: -1;
+    }
+}

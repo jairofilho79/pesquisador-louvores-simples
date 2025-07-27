@@ -1,0 +1,220 @@
+/* Filtros CSS */
+.filters-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(212, 175, 55, 0.3);
+    margin-top: 12px;
+}
+
+.filters-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+/* Indicador de conteúdo filtrado */
+.filter-indicator {
+    font-size: 12px;
+    opacity: 0.7;
+    margin-left: 8px;
+    filter: grayscale(1);
+}
+
+.search-option-louvor-card[data-status="P"] .filter-indicator {
+    opacity: 0.5;
+}
+
+.filter-section {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.filter-section-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--gold-color);
+    margin-right: 4px;
+}
+
+.filter-checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.filter-checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: #fff;
+    user-select: none;
+}
+
+.filter-checkbox-item input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: var(--gold-color);
+}
+
+.filter-checkbox-item:hover {
+    color: var(--gold-color);
+}
+
+/* Mobile - Select Dropdown para conteúdo musical */
+.content-filter-mobile {
+    display: none;
+}
+
+.content-filter-select {
+    position: relative;
+    display: inline-block;
+}
+
+.content-filter-button {
+    background: var(--background-color);
+    border: 1px solid var(--gold-color);
+    color: var(--gold-color);
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 140px;
+    justify-content: space-between;
+}
+
+.content-filter-button:hover {
+    background: rgba(212, 175, 55, 0.1);
+}
+
+.content-filter-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--background-color);
+    border: 1px solid var(--gold-color);
+    border-top: none;
+    border-radius: 0 0 6px 6px;
+    z-index: 1000;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+}
+
+.content-filter-dropdown.show {
+    display: block;
+}
+
+.content-filter-option {
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: #fff;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.content-filter-option:last-child {
+    border-bottom: none;
+}
+
+.content-filter-option:hover {
+    background: rgba(212, 175, 55, 0.1);
+    color: var(--gold-color);
+}
+
+.content-filter-option input[type="checkbox"] {
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+    accent-color: var(--gold-color);
+}
+
+.dropdown-arrow {
+    font-size: 0.7rem;
+    transition: transform 0.2s;
+}
+
+.dropdown-arrow.rotate {
+    transform: rotate(180deg);
+}
+
+/* Responsividade */
+@media screen and (max-width: 960px) {
+    .content-filter-desktop {
+        display: none;
+    }
+    
+    .content-filter-mobile {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .filters-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    
+    .filter-section {
+        width: 100%;
+        justify-content: flex-start;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .filter-checkbox-group {
+        gap: 8px;
+    }
+    
+    .filter-checkbox-item {
+        font-size: 0.8rem;
+    }
+    
+    .content-filter-button {
+        font-size: 0.8rem;
+        padding: 5px 10px;
+        min-width: 120px;
+    }
+    
+    .content-filter-option {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+    }
+}
+
+/* Ícone de informação sobre imprecisão do filtro */
+.filter-info-icon {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: var(--gold-color);
+    color: var(--background-color);
+    border-radius: 50%;
+    text-align: center;
+    font-size: 11px;
+    line-height: 16px;
+    font-weight: bold;
+    margin-left: 6px;
+    cursor: help;
+    opacity: 0.8;
+}
+
+.filter-info-icon:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}

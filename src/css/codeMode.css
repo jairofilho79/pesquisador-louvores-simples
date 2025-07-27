@@ -1,0 +1,349 @@
+/* CSS para o modo de códigos únicos */
+
+/* Interface do modo código */
+.code-mode-interface {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.code-mode-header {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.playlist-title-row {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.playlist-timestamp-row {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+.playlist-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: var(--gold-color, #d4af37);
+    margin: 0;
+    text-align: center;
+}
+
+.playlist-timestamp {
+    font-size: 18px;
+    font-weight: normal;
+    color: var(--gold-color, #d4af37);
+    margin: 0;
+    text-align: center;
+    opacity: 0.8;
+}
+
+.code-mode-actions {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    justify-content: center;
+}
+
+.share-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.share-btn:hover {
+    background: #218838;
+}
+
+.share-btn span {
+    font-size: 16px;
+}
+
+.back-to-search-btn {
+    background: #6c757d;
+    color: white;
+    text-decoration: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.back-to-search-btn:hover {
+    background: #5a6268;
+    text-decoration: none;
+    color: white;
+}
+
+.back-to-search-btn span {
+    font-size: 16px;
+}
+
+/* Informações da playlist */
+.playlist-info {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.playlist-codes-count {
+    font-weight: bold;
+    color: #495057;
+    font-size: 16px;
+}
+
+.playlist-codes-list {
+    font-family: 'Courier New', monospace;
+    color: #6c757d;
+    font-size: 14px;
+    background: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: 1px solid #dee2e6;
+}
+
+/* Container de resultados */
+.code-results-container {
+    min-height: 200px;
+}
+
+/* Mensagem de sem resultados */
+.no-results-message {
+    text-align: center;
+    padding: 40px 20px;
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.no-results-message h3 {
+    color: #dc3545;
+    margin-bottom: 15px;
+}
+
+.no-results-message ul {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0;
+}
+
+.no-results-message li {
+    margin: 5px 0;
+}
+
+.no-results-message code {
+    background: #e9ecef;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+}
+
+.no-results-message .btn {
+    background: #007bff;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: inline-block;
+    margin-top: 15px;
+    transition: background 0.3s;
+}
+
+.no-results-message .btn:hover {
+    background: #0056b3;
+    text-decoration: none;
+    color: white;
+}
+
+/* Resultados simples (fallback) */
+.simple-results {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.simple-result-item {
+    background: white;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: box-shadow 0.3s;
+}
+
+.simple-result-item:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.simple-result-item h3 {
+    margin: 0 0 10px 0;
+    color: #2c3e50;
+    font-size: 18px;
+}
+
+.simple-result-item p {
+    margin: 5px 0;
+    color: #6c757d;
+    font-size: 14px;
+}
+
+.simple-result-item strong {
+    color: #007bff;
+    font-family: 'Courier New', monospace;
+}
+
+/* Feedback de compartilhamento */
+.share-feedback {
+    animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .code-mode-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+    
+    .playlist-title {
+        font-size: 24px;
+        text-align: center;
+    }
+    
+    .code-mode-actions {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .playlist-info {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .playlist-codes-list {
+        word-break: break-all;
+        font-size: 12px;
+    }
+    
+    .simple-results {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Esconder elementos por padrão */
+.code-mode-only {
+    display: none;
+}
+
+/* Quando estiver no modo código */
+.code-mode .search-mode-only,
+.code-mode .search-container,
+.code-mode .filters-container {
+    display: none !important;
+}
+
+.code-mode .code-mode-only {
+    display: block !important;
+}
+
+/* Botão adicionar à lista (para modo pesquisa) */
+.add-to-playlist-btn {
+    background: #17a2b8;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-left: 10px;
+    transition: background 0.3s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 32px;
+}
+
+.add-to-playlist-btn svg {
+    width: 14px;
+    height: 14px;
+    pointer-events: none;
+}
+
+.add-to-playlist-btn:hover {
+    background: #138496;
+}
+
+.add-to-playlist-btn.added {
+    background: #28a745;
+}
+
+.add-to-playlist-btn.added:hover {
+    background: #218838;
+}
+
+/* Badge de código nos resultados de pesquisa */
+.louvor-code-badge {
+    background: #e9ecef;
+    color: #495057;
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-left: 8px;
+    border: 1px solid #ced4da;
+}
+
+/* Animações */
+.playlist-updated {
+    animation: highlight 0.5s ease-out;
+}
+
+@keyframes highlight {
+    0% { background-color: #d4edda; }
+    100% { background-color: transparent; }
+}

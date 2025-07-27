@@ -1,0 +1,457 @@
+.search-option-louvor-card {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Transição suave restaurada */
+    cursor: pointer;
+    border: 1px solid #e9ecef;
+    /* Ajustado para considerar padding do search-container (16px * 2 = 32px) + padding interno do input (16px * 2 = 32px) */
+    max-width: calc(50vw - 64px); /* ALINHADO COM O INPUT REAL - Desktop */
+    min-width: calc(50vw - 64px); /* ALINHADO COM O INPUT REAL - Desktop */
+    width: calc(50vw - 64px);
+    margin: 1rem auto; /* Adicionado espaçamento vertical */
+    position: relative;
+    isolation: isolate; /* Isola o contexto de empilhamento */
+    overflow: visible; /* SEMPRE visível para permitir expansão */
+}
+
+/* Animações de hover restauradas */
+.search-option-louvor-card:hover {
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+    border-color: #dee2e6;
+}
+
+.search-option-louvor-card:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Força overflow visível em TODOS os estados */
+.search-option-louvor-card,
+.search-option-louvor-card.card-expanded,
+.search-option-louvor-card:hover,
+.search-option-louvor-card:active {
+    overflow: visible !important;
+}
+
+.search-option-louvor-card:hover {
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.14);
+}
+
+.search-option-louvor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    gap: 1rem;
+}
+
+.search-option-louvor-title {
+    font-size: 1.4rem;
+    color: #2c3e50;
+    margin: 0;
+    flex: 1;
+    line-height: 1.3;
+}
+
+.search-option-go-link-btn {
+    background: var(--btn-background-color);
+    border: none;
+    border-radius: 0.3rem;
+    padding: 0.3rem 0.6rem;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: background 0.2s;
+    color: var(--gold-color);
+    font-family: 'Open Sans', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    width: 1.8em;
+    height: 1.8em;
+}
+
+.search-option-louvor-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+}
+
+.search-option-louvor-numero {
+    font-weight: 600;
+    color: #2c3e50;
+    background: #e3f2fd;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 1.1rem;
+    display: block;
+    width: fit-content;
+}
+
+.search-option-louvor-classificacao,
+.search-option-louvor-categoria {
+    font-size: 1.1rem;
+    background: #f5f7fa;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    width: fit-content;
+    display: block;
+}
+
+.search-option-louvor-colecao {
+    background: rgba(155, 89, 182, 0.2);
+    color: #9b59b6;
+    padding: 0.3rem 0.8rem;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: block;
+    border: 1px solid rgba(155, 89, 182, 0.3);
+    width: fit-content;
+}
+
+.search-option-louvor-colecao:empty,
+.search-option-louvor-numero:empty,
+.search-option-louvor-classificacao:empty,
+.search-option-louvor-categoria:empty {
+    display: none;
+}
+
+/* Estilos para cards com múltiplos PDFs */
+.search-option-louvor-card[data-multiple-pdfs="true"] {
+    position: relative;
+}
+
+/* Removido: indicador automático de contagem de PDFs */
+/* A informação de múltiplos arquivos é indicada pelo comportamento de expansão */
+
+/* Cores baseadas no status */
+.search-option-louvor-card[data-status="V"] {
+    border-left: 4px solid #28a745; /* Verde - Completo */
+}
+
+.search-option-louvor-card[data-status="A"] {
+    border-left: 4px solid #ffc107; /* Amarelo - Incompleto */
+}
+
+.search-option-louvor-card[data-status="P"] {
+    border-left: 4px solid #6c757d; /* Cinza/Preto - Ausente */
+}
+
+.search-option-louvor-card[data-status=""] {
+    border-left: 4px solid #17a2b8; /* Azul - Sem status */
+}
+
+/* Altura dinâmica para cards expandidos com animação */
+.search-option-louvor-card.card-expanded {
+    min-height: auto;
+    height: auto;
+    overflow: visible; /* Permite que o conteúdo expandido seja visível */
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12); /* Sombra mais intensa quando expandido */
+}
+
+/* Lista de PDFs com animações restauradas */
+.pdf-options-list {
+    margin-top: 1rem;
+    padding: 1rem 0;
+    border-top: 1px solid #dee2e6;
+    display: none;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.pdf-options-list.expanded {
+    display: block !important;
+    /* Forçar visibilidade completa */
+    visibility: visible !important;
+    opacity: 1 !important;
+    transform: translateY(0);
+    position: relative !important;
+    z-index: 999 !important;
+    /* Garantir que não há limitações de altura */
+    max-height: none !important;
+    height: auto !important;
+    overflow: visible !important;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.pdf-option-item {
+    display: flex;
+    align-items: center;
+    padding: 9px 13px;  /* Aumentado de 8px 12px para 9px 13px (+10%) */
+    margin: 4px 0;
+    background: #f8f9fa;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease; /* Animação restaurada */
+    border: 1px solid #e9ecef;
+    min-height: 42px;  /* Altura mínima para melhor toque em dispositivos móveis */
+    position: relative;
+    z-index: 2; /* Garante que os itens fiquem acima de outros elementos */
+    transform: translateX(0); /* Estado inicial para animação */
+}
+
+.pdf-option-item:hover {
+    background: #e9ecef;
+    transform: translateX(4px); /* Animação de deslize restaurada */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15); /* Sombra mais pronunciada */
+    border-color: #dee2e6;
+}
+
+.pdf-option-icon {
+    margin-right: 8px;
+    font-size: 1.1em;
+}
+
+.pdf-option-name {
+    flex: 1;
+    font-size: 0.99rem;  /* Aumentado de 0.9rem para 0.99rem (+10%) */
+    color: #495057;
+}
+
+/* Indicador de expansão com animações melhoradas */
+.expand-indicator {
+    margin-left: 8px;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease;
+    color: #6c757d;
+    font-size: 0.9rem;
+    transform-origin: center;
+}
+
+.expand-indicator.expanded {
+    transform: rotate(180deg);
+    color: #ffd700; /* Cor dourada quando expandido */
+}
+
+.expand-indicator:hover {
+    color: #495057;
+    transform: scale(1.1);
+}
+
+/* Remover menu flutuante - não precisamos mais */
+.pdf-menu {
+    display: none;
+}
+
+/* Isolamento específico - SIMPLIFICADO */
+.search-option-louvor-card .pdf-options-list {
+    margin-top: 1rem !important;
+    padding-top: 1rem !important;
+    border-top: 1px solid #dee2e6 !important;
+    background: transparent !important;
+}
+
+.search-option-louvor-card .pdf-options-list.expanded {
+    overflow: visible !important;
+    padding-bottom: 1rem !important;
+}
+
+/* Garantir comportamento correto em todos os dispositivos */
+@media screen {
+    .search-option-louvor-card .pdf-options-list.expanded {
+        overflow: visible !important;
+        max-height: none !important;
+        height: auto !important;
+        position: relative !important;
+        z-index: 10 !important;
+    }
+    
+    .search-option-louvor-card.card-expanded {
+        overflow: visible !important;
+        position: relative !important;
+        z-index: 5 !important;
+    }
+}
+
+/* Fix específico para dispositivos móveis e tablets */
+@media (max-width: 960px) {
+    .search-option-louvor-card {
+        contain: none !important; /* Remove containment que pode limitar expansão */
+        overflow: visible !important;
+    }
+    
+    .search-option-louvor-card.card-expanded {
+        overflow: visible !important;
+        transform: none !important; /* Remove transformações que podem criar contexto de empilhamento */
+    }
+    
+    .search-option-louvor-card .pdf-options-list {
+        contain: none !important;
+        overflow: visible !important;
+    }
+    
+    .search-option-louvor-card .pdf-options-list.expanded {
+        overflow: visible !important;
+        max-height: none !important;
+        height: auto !important;
+        position: static !important; /* Use static para evitar problemas de posicionamento */
+    }
+    
+    .pdf-option-item {
+        contain: none !important;
+        overflow: visible !important;
+    }
+}
+
+/* Regra universal para forçar comportamento correto */
+@media screen {
+    body, html, #pesquisador-simples, 
+    .pesquisador-simples-container,
+    .search-options-container,
+    .search-option-louvor-card,
+    .search-option-louvor-card.card-expanded,
+    .pdf-options-list,
+    .pdf-options-list.expanded {
+        overflow: visible !important;
+        max-height: none !important;
+        height: auto !important;
+    }
+    
+    /* Remove qualquer clipping que possa estar ocorrendo */
+    .search-option-louvor-card * {
+        overflow: visible !important;
+    }
+}
+
+/* Responsivo */
+/* Tablet e Mobile - alinhado com input considerando padding */
+@media (max-width: 960px) {
+    .search-option-louvor-card {
+        padding: 1.2rem;
+        /* Ajustado para considerar padding do search-container (10px * 2 = 20px) + padding interno do input (16px * 2 = 32px) */
+        min-width: calc(80vw - 52px); /* ALINHADO COM O INPUT REAL */
+        max-width: calc(80vw - 52px); /* ALINHADO COM O INPUT REAL */
+        width: calc(80vw - 52px);
+        overflow: visible; /* Permite expansão */
+    }
+    
+    .search-option-louvor-card.card-expanded {
+        overflow: visible !important;
+    }
+    
+    .pdf-options-list.expanded {
+        overflow: visible !important;
+        max-height: none !important;
+    }
+    
+    .pdf-option-item {
+        padding: 13px;  /* Aumentado de 12px para 13px (+10%) */
+        font-size: 1.1rem;  /* Aumentado de 1rem para 1.1rem (+10%) */
+        min-height: 46px;  /* Altura mínima para melhor toque em dispositivos móveis */
+    }
+    
+    .pdf-option-name {
+        font-size: 1.1rem;  /* Aumentado de 1rem para 1.1rem (+10%) */
+    }
+}
+
+/* Mobile específico - ajustes de layout mantendo largura do input */
+@media (max-width: 600px) {
+    .search-option-louvor-header {
+        font-size: 1.3rem;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .search-option-louvor-title {
+        font-size: 1.2rem;
+        flex: 1;
+        min-width: 0; /* Permite que o texto seja truncado se necessário */
+    }
+    
+    .expand-indicator {
+        flex-shrink: 0; /* Impede que a seta diminua */
+        margin-left: 0.5rem;
+        color: #ffd700; /* Garante cor amarela no mobile */
+    }
+}
+
+/* Estilos para as seções principais (PDFs e Áudios) */
+.master-file-section {
+    margin-bottom: 1.5rem;
+}
+
+.master-section-title {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #495057;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e9ecef;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.master-section-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Estilos para subpastas expansíveis */
+.collapsible-subfolder {
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.subfolder-header-clickable {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: #f8f9fa;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.subfolder-header-clickable:hover {
+    background: #e9ecef;
+}
+
+.subfolder-toggle-icon {
+    font-size: 0.8rem;
+    color: #6c757d;
+    margin-right: 0.75rem;
+    transition: transform 0.2s ease;
+    font-family: monospace;
+}
+
+.subfolder-toggle-icon.expanded {
+    transform: rotate(90deg);
+}
+
+.subfolder-name {
+    font-weight: 500;
+    color: #495057;
+    flex: 1;
+}
+
+.subfolder-file-count {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-left: 0.5rem;
+}
+
+.subfolder-expandable-content {
+    padding: 0.5rem 1rem 1rem 1rem;
+    background: #fff;
+}
+
+.subfolder-expandable-content .file-option {
+    margin-left: 1.5rem;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid #f8f9fa;
+}
+
+.subfolder-expandable-content .file-option:last-child {
+    border-bottom: none;
+}

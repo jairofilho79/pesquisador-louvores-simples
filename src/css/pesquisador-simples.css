@@ -1,0 +1,74 @@
+html, body {
+    background: var(--background-color);
+    scroll-behavior: smooth;
+    overflow: visible !important;
+    height: auto !important;
+    min-height: 100vh;
+}
+
+#pesquisador-simples {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Mudança: alinha no topo em vez do centro */
+    min-height: 100vh;
+    height: auto; /* Permite crescimento automático */
+    background: var(--background-color);
+    overflow: visible; /* Permite que o conteúdo transborde */
+}
+
+@media (max-width: 960px) {
+    #pesquisador-simples {
+        align-items: flex-start !important;
+        overflow: visible !important;
+        padding: 0;
+    }
+}
+
+/* Pesquisador Simples Styles */
+.pesquisador-simples-container {
+    height: auto; /* Permite crescimento dinâmico */
+    min-width: 50vw;
+    max-width: 50vw;
+    background: var(--background-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    overflow: visible; /* Permite que o conteúdo transborde */
+}
+
+@media (max-width: 960px) {
+    .pesquisador-simples-container {
+        min-width: 90vw;
+        max-width: 90vw;
+        padding: 1rem;
+        overflow: visible !important;
+    }
+    
+    #pesquisador-simples {
+        align-items: flex-start !important;
+        overflow: visible !important;
+        padding: 0;
+    }
+}
+
+.pesquisador-simples-title {
+    color: var(--placeholder-color);
+    font-size: 3rem;
+    font-weight: 700;
+    text-align: center;
+    font-size: 2.5rem;
+    font-family: 'EB Garamond', serif;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    letter-spacing: 2px;
+}
+
+@media (max-width: 768px) {
+    .pesquisador-simples-title {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+        min-width: 50vw;
+        max-width: 80vw;
+    }
+}
