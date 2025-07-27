@@ -263,7 +263,7 @@ class URLCodeManager {
                         <button id="share-playlist-btn" class="share-btn">
                             <span>🔗</span> Compartilhar Lista
                         </button>
-                        <a href="/" class="back-to-search-btn">
+                        <a href="/pesquisador-louvores-simples/" class="back-to-search-btn">
                             <span>🔍</span> Voltar para Pesquisa
                         </a>
                     </div>
