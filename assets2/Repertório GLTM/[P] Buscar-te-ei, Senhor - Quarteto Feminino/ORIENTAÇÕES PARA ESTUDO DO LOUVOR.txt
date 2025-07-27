@@ -1,0 +1,11 @@
+Estudaremos o louvor conforme as orientações a seguir:
+ 
+- Vozes:
+
+* Soprano 2: 
+- No compasso 57, o MIDI está errado. No MIDI está sendo tocado: "...pri (Solb) - mei (Láb) - ro (Láb)...".
+O correto é: "...pri (Solb) - mei (Solb) - ro (Láb)...".
+- Compasso 65: idem 57 só que neste caso a tonalidade é Sol Maior, portanto ficará assim:"...pri (Sol) - 
+mei (Sol) - ro (Lá)...".
+
+* Demais vozes estão com o MIDI correto.
