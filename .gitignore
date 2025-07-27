@@ -1,8 +1,16 @@
 
 # Ignore audio files (recursively in all directories)
 /**/*.mp3
+/**/*.wav
 /**/*.m4a
+/**/*.aac
+/**/*.flac
+/**/*.ogg
+/**/*.wma
 /**/*.mid
+/**/*.midi
+/**/*.mpeg
+/**/*.mpg
 
 # Logs
 *.log
