@@ -1,0 +1,21 @@
+Segue as orientações:
+
+** Geral:
+
+- Cantaremos/tocaremos em Lá maior.
+
+** Vozes:
+
+- Tenor: Ouvir com atenção o áudio guia do tenor e acompanhar com a partitura, existem alguns tempos errados,
+sobretudo nos finais das frases.
+
+** Instrumentos:
+
+- Seguir conforme a partitura de cada instrumeto e não como o áudio geral. Existe um MIDI dos sopros disponível
+com o arranjo correto.
+
+- Bateria: Não faremos a mudança de ritmo durante o louvor, como executada no áudio.
+
+- Cordas: Como o arranjo de sopros e cordas são diferentes, a parte de cordas poderá sofrer algumas alterações.
+Após finalizarmos o último compasso, as cordas repetirão mais uma vez a última nota tocada em uma semínima (Não
+haverá tremolo nessa última semínima).
