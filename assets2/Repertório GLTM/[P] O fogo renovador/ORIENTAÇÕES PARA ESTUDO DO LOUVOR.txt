@@ -1,0 +1,57 @@
+Estudaremos o louvor conforme as orientações a seguir:
+
+- Instrumentos:   
+
+   * Cordas:
+    
+    - Arranjo mal-escrito: O primeiro tempo, na verdade será o 3º de cada compasso.
+Portanto: 1º tempo = 3º tempo 
+          2º tempo = 4º Tempo
+          3º Tempo = 1º Tempo do compasso subsequente.
+          4º Tempo = 2º Tempo do compasso subsequente.
+    Portanto o primeiro tempo do Compasso 5 da introdução, na verdade é o 3º tempo do 
+compasso 4. Esse escrita incorreta se perpetua por toda o louvor. Atenção à regência!!
+
+    - Violinos: Conferir a pauta de cordas e da de violinos (o que falta em uma completar na outra).
+
+   * Flauta: 
+    - Havendo Flugel, a flauta entrá apenas no 4º tempo do compasso 5. Não havendo
+poderá entrar Da capo.
+    *** Existe um erro no arranjo, a partir do compasso 25 (CORREÇÃO SERÁ EXPLICADA MELHOR
+NO MOMENTO DO ENSAIO), porém, simplificadamente, para facilitar:
+    - Na primeira pausa de 17 compassos, serão feitos apenas 16 compassos + 2 tempos de 
+pausa e continua o restante normalmente, porém com alterações de "sensitivas" dos tempos:
+          1º tempo = 3º tempo 
+          2º tempo = 4º Tempo
+          3º Tempo = 1º Tempo do compasso subsequente.
+          4º Tempo = 2º Tempo do compasso subsequente.
+
+- Vozes: A partitura a ser usada pelas vozes é a escrita: "O fogo renovador - vozes 
+corrigido". A outra, intitulada "Original" é para o estudo do piano.
+
+  * Soprano: MIDI correto.
+  
+  * Contralto: 
+
+     - Compasso 36-38: Erro de tempos. A irmã que canta diminuiu 1/2 tempo na sílaba:
+"Sabemos" e apartir daí comeu tempos até o compasso 38.
+     - Compasso 44-46: Mesmo erro acima, a irmã diminuiu 1/2 tempo no "|A|- ceitarmos", 
+voltando ao correto em "Nos trará..."
+     - Compasso 54-55: "O renova|dor|", tem uma queda na silaba |dor|. O correto é que 
+se faça um sol# (2 tempos) e um Fá# (1 tempo) nessa sílaba e não apenas manter em Sol# os
+três tempos.
+     - Compassos 72-74: Faremos "Amém" e não "Uh", como foi cantado no áudio.
+
+  * Tenor:
+
+     - Desafinos diversos, tomarem cuidado ao ouvirem. Acompanhar sempre com a partitura.
+     - Compasso 56-57: "Atuará em |Nós|". O "nós" tem doi tempos em Dó# e três tempos
+em Lá# e não cinco tempos em Do# conforme foi cantado no áudio.
+     - Compasso 68: "puro |se| tornar". O "se" é na verdade um Si e não um Lá# como foi
+entoado no áudio. 
+     - Compassos 72-74: Faremos "Amém" e não "Uh", como foi cantado no áudio.
+
+  * Baixo:
+
+     - Compasso 50: "O Renovador", observar, pois o irmão que canta no áudio se mostrou
+um pouco inseguro nesse momento.
