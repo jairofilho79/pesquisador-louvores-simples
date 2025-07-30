@@ -39,8 +39,7 @@ class URLCodeManager {
                 const isValid = this.isValidCode(upperCode);
                 if (!isValid) {
                     console.warn('⚠️ Código inválido ignorado:', code, '→', upperCode);
-                    console.warn('  ✓ Formato esperado: XXX000 ou XXX000_slug');
-                    console.warn('  ✗ Recebido:', code.length, 'caracteres:', code.split('').map(c => c.charCodeAt(0)));
+                    console.warn('  ✗ Código não encontrado na base de dados');
                 }
                 return isValid;
             }).map(code => code.toUpperCase());
@@ -86,15 +85,18 @@ class URLCodeManager {
     isValidCode(code) {
         if (!code || typeof code !== 'string') return false;
         
-        // Formato: XXX000 ou XXX000_slug (mínimo 6 chars)
-        const codePattern = /^[A-Z]{3}\d{3}(_.*)?$/;
-        const isValid = codePattern.test(code) && code.length >= 6;
-        
-        if (!isValid) {
-            console.warn('❌ Código inválido:', code, 'não atende ao padrão XXX000');
+        // Verificar se o código existe na lista de louvores carregados
+        if (window.louvoresAssets2ComCodigos) {
+            const exists = window.louvoresAssets2ComCodigos.some(l => l.codigo === code);
+            if (!exists) {
+                console.warn('❌ Código não encontrado na base de dados:', code);
+            }
+            return exists;
         }
         
-        return isValid;
+        // Se os dados ainda não foram carregados, aceitar qualquer código válido (não vazio)
+        // A validação real acontecerá quando os dados estiverem disponíveis
+        return code.length > 0;
     }
 
     /**
