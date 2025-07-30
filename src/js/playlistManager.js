@@ -335,19 +335,38 @@ class PlaylistManager {
             return;
         }
 
-        const itemsHTML = this.currentPlaylist.map(codigo => {
+        const itemsHTML = this.currentPlaylist.map((codigo, index) => {
             const louvor = window.louvoresAssets2ComCodigos.find(l => l.codigo === codigo);
             const nome = louvor ? louvor.nome : `Código: ${codigo}`;
             const numero = louvor ? louvor.numero || '' : '';
             const categoria = louvor ? louvor.categoria || '' : '';
+            
+            const position = index + 1;
+            const isFirst = index === 0;
+            const isLast = index === this.currentPlaylist.length - 1;
 
             return `
-                <div class="playlist-item" data-codigo="${codigo}">
+                <div class="playlist-item" data-codigo="${codigo}" data-position="${position}">
+                    <!-- Controles de Reordenação (3fr) -->
+                    <div class="reorder-controls">
+                        <button class="reorder-btn reorder-up" data-code="${codigo}" ${isFirst ? 'disabled' : ''} title="Mover para cima">
+                            ⬆️
+                        </button>
+                        <input type="number" class="position-input" data-code="${codigo}" 
+                               value="${position}" min="1" max="${this.currentPlaylist.length}" title="Posição atual">
+                        <button class="reorder-btn reorder-down" data-code="${codigo}" ${isLast ? 'disabled' : ''} title="Mover para baixo">
+                            ⬇️
+                        </button>
+                    </div>
+                    
+                    <!-- Informações do Louvor (7fr) -->
                     <div class="playlist-item-info">
                         <span class="playlist-item-nome">${nome}</span>
                         ${numero ? `<span class="playlist-item-numero">#${numero}</span>` : ''}
                         ${categoria ? `<span class="playlist-item-categoria">${categoria}</span>` : ''}
                     </div>
+                    
+                    <!-- Ação de Remover (2fr) -->
                     <button class="playlist-item-remove" data-codigo="${codigo}" title="Remover">×</button>
                 </div>
             `;
@@ -363,6 +382,68 @@ class PlaylistManager {
                 this.removeLouvor(codigo);
             });
         });
+
+        // Adicionar listeners para reordenação
+        this.bindReorderEvents(container);
+    }
+
+    /**
+     * Bind eventos para os controles de reordenação
+     */
+    bindReorderEvents(container) {
+        // Event delegation para setas de reordenação
+        container.addEventListener('click', (e) => {
+            const target = e.target;
+            const code = target.dataset.code;
+            
+            if (target.classList.contains('reorder-up')) {
+                e.preventDefault();
+                if (this.moveCodeUp(code)) {
+                    console.log(`⬆️ Movendo ${code} para cima`);
+                }
+            } else if (target.classList.contains('reorder-down')) {
+                e.preventDefault();
+                if (this.moveCodeDown(code)) {
+                    console.log(`⬇️ Movendo ${code} para baixo`);
+                }
+            }
+        });
+        
+        // Event delegation para inputs de posição
+        container.addEventListener('change', (e) => {
+            const target = e.target;
+            e.preventDefault();
+            
+            if (target.classList.contains('position-input')) {
+                const code = target.dataset.code;
+                const newPosition = parseInt(target.value);
+                
+                if (newPosition && newPosition >= 1 && newPosition <= this.currentPlaylist.length) {
+                    if (this.setCodePosition(code, newPosition)) {
+                        console.log(`🎯 Movendo ${code} para posição ${newPosition}`);
+                    }
+                } else {
+                    // Restaurar valor anterior se inválido
+                    const currentIndex = this.currentPlaylist.indexOf(code);
+                    target.value = currentIndex + 1;
+                }
+            }
+        });
+        
+        // Debounce para input numérico (evitar muitas atualizações)
+        let inputTimeout;
+        container.addEventListener('input', (e) => {
+            const target = e.target;
+            
+            if (target.classList.contains('position-input')) {
+                clearTimeout(inputTimeout);
+                inputTimeout = setTimeout(() => {
+                    target.dispatchEvent(new Event('change'));
+                }, 500);
+            }
+        });
+        
+        console.log('✅ Eventos de reordenação configurados no modal');
     }
 
     addLouvor(codigo) {
@@ -399,6 +480,77 @@ class PlaylistManager {
             this.updateAddButtons();
         } else {
             console.log('⚠️ Código não encontrado na lista');
+        }
+    }
+
+    /**
+     * Move um código de uma posição para outra
+     */
+    moveCode(fromIndex, toIndex) {
+        if (fromIndex < 0 || fromIndex >= this.currentPlaylist.length ||
+            toIndex < 0 || toIndex >= this.currentPlaylist.length ||
+            fromIndex === toIndex) {
+            return false;
+        }
+        
+        const code = this.currentPlaylist.splice(fromIndex, 1)[0];
+        this.currentPlaylist.splice(toIndex, 0, code);
+        
+        this.updateInterface();
+        this.syncToURLManager();
+        
+        console.log(`🔄 Código ${code} movido da posição ${fromIndex + 1} para ${toIndex + 1}`);
+        return true;
+    }
+
+    /**
+     * Move um código uma posição para cima
+     */
+    moveCodeUp(codigo) {
+        const index = this.currentPlaylist.indexOf(codigo);
+        
+        if (index > 0) {
+            return this.moveCode(index, index - 1);
+        }
+        return false;
+    }
+
+    /**
+     * Move um código uma posição para baixo
+     */
+    moveCodeDown(codigo) {
+        const index = this.currentPlaylist.indexOf(codigo);
+        
+        if (index >= 0 && index < this.currentPlaylist.length - 1) {
+            return this.moveCode(index, index + 1);
+        }
+        return false;
+    }
+
+    /**
+     * Define uma posição específica para um código
+     */
+    setCodePosition(codigo, newPosition) {
+        const currentIndex = this.currentPlaylist.indexOf(codigo);
+        const targetIndex = newPosition - 1; // Converter de 1-based para 0-based
+        
+        if (currentIndex >= 0 && targetIndex >= 0 && targetIndex < this.currentPlaylist.length) {
+            return this.moveCode(currentIndex, targetIndex);
+        }
+        return false;
+    }
+
+    /**
+     * Sincroniza mudanças locais com o URLCodeManager
+     */
+    syncToURLManager() {
+        if (window.urlCodeManager) {
+            // Atualizar códigos no URLCodeManager
+            window.urlCodeManager.codes = [...this.currentPlaylist];
+            window.urlCodeManager.playlistName = this.playlistName;
+            window.urlCodeManager.updateURL();
+            
+            console.log('🔗 Sincronizado com URLCodeManager:', this.currentPlaylist);
         }
     }
 
