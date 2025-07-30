@@ -391,8 +391,14 @@ class PlaylistManager {
      * Bind eventos para os controles de reordenação
      */
     bindReorderEvents(container) {
-        // Event delegation para setas de reordenação
-        container.addEventListener('click', (e) => {
+        // SOLUÇÃO: Clonar container para remover TODOS os listeners antigos
+        const cleanContainer = container.cloneNode(true);
+        container.parentNode.replaceChild(cleanContainer, container);
+        
+        console.log('🧹 Listeners antigos removidos via cloneNode');
+        
+        // Event delegation para setas de reordenação (em container limpo)
+        cleanContainer.addEventListener('click', (e) => {
             const target = e.target;
             const code = target.dataset.code;
             
@@ -409,8 +415,8 @@ class PlaylistManager {
             }
         });
         
-        // Event delegation para inputs de posição
-        container.addEventListener('change', (e) => {
+        // Event delegation para inputs de posição (em container limpo)
+        cleanContainer.addEventListener('change', (e) => {
             const target = e.target;
             e.preventDefault();
             
@@ -430,9 +436,9 @@ class PlaylistManager {
             }
         });
         
-        // Debounce para input numérico (evitar muitas atualizações)
+        // Debounce para input numérico (em container limpo)
         let inputTimeout;
-        container.addEventListener('input', (e) => {
+        cleanContainer.addEventListener('input', (e) => {
             const target = e.target;
             
             if (target.classList.contains('position-input')) {
@@ -443,7 +449,7 @@ class PlaylistManager {
             }
         });
         
-        console.log('✅ Eventos de reordenação configurados no modal');
+        console.log('✅ Eventos de reordenação configurados em container limpo');
     }
 
     addLouvor(codigo) {
