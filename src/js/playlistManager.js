@@ -46,28 +46,32 @@ class PlaylistManager {
      * Sincroniza com o URLCodeManager
      */
     syncWithURLManager() {
-        if (window.urlCodeManager && window.urlCodeManager.getCodeMode()) {
-            console.log('🔗 Sincronizando playlist com códigos da URL...');
+        // Sempre sincronizar playlist_codes, independente do modo
+        console.log('🔗 Sincronizando playlist com playlist_codes da URL...');
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        const playlistCodes = urlParams.get('playlist_codes');
+        const urlPlaylistName = urlParams.get('playlist');
+        const urlPlaylistTimestamp = urlParams.get('timestamp');
+        
+        if (playlistCodes) {
+            // Atualizar estado local com playlist_codes
+            this.currentPlaylist = playlistCodes.split(',').filter(code => code.trim());
+            this.playlistName = urlPlaylistName || '';
+            this.playlistTimestamp = urlPlaylistTimestamp || null;
             
-            // Obter códigos da URL
-            const urlCodes = window.urlCodeManager.getCodes();
-            const urlPlaylistName = window.urlCodeManager.getPlaylistName();
-            const urlPlaylistTimestamp = window.urlCodeManager.getPlaylistTimestamp();
-            
-            // Atualizar estado local
-            this.currentPlaylist = [...urlCodes];
-            this.playlistName = urlPlaylistName;
-            this.playlistTimestamp = urlPlaylistTimestamp;
-            
-            // Atualizar interface
-            this.updateInterface();
-            
-            // Aguardar DOM estar pronto e depois atualizar botões
-            setTimeout(() => {
-                this.updateAddButtons();
-                console.log(`✅ Sincronizado: ${this.currentPlaylist.length} códigos`);
-            }, 100);
+            console.log(`✅ Playlist sincronizada com ${this.currentPlaylist.length} códigos de playlist_codes`);
         }
+        // Nota: Removida a leitura de 'codes' - PlaylistManager trabalha apenas com 'playlist_codes'
+        
+        // Atualizar interface
+        this.updateInterface();
+        
+        // Aguardar DOM estar pronto e depois atualizar botões
+        setTimeout(() => {
+            this.updateAddButtons();
+            console.log(`✅ Sincronizado: ${this.currentPlaylist.length} códigos na playlist`);
+        }, 100);
     }
 
     injectPlaylistInterface() {
@@ -301,12 +305,21 @@ class PlaylistManager {
         const nameInput = document.getElementById('playlist-name');
         const shareBtn = document.getElementById('playlist-share-btn');
         const clearBtn = document.getElementById('playlist-clear-btn');
+        const toggleBtn = document.getElementById('playlist-toggle-btn');
 
         if (countElement) {
             countElement.textContent = this.currentPlaylist.length;
         }
 
         const hasItems = this.currentPlaylist.length > 0;
+        
+        // Esconder botão de playlist no modo código quando vazio
+        const isCodeMode = window.urlCodeManager && window.urlCodeManager.getCodeMode();
+        const shouldHideButton = isCodeMode && !hasItems;
+        
+        if (toggleBtn) {
+            toggleBtn.style.display = shouldHideButton ? 'none' : 'block';
+        }
 
         if (shareBtn) shareBtn.disabled = !hasItems;
         if (clearBtn) clearBtn.disabled = !hasItems;
@@ -547,17 +560,69 @@ class PlaylistManager {
     }
 
     /**
-     * Sincroniza mudanças locais com o URLCodeManager
+     * Migra do modo código para modo pesquisa preservando a playlist
+     */
+    migrateToSearchMode() {
+        console.log('🔄 Migrando para modo pesquisa preservando playlist...');
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        // Se há códigos no modo atual, preservá-los como playlist_codes
+        if (this.currentPlaylist.length > 0) {
+            urlParams.set('playlist_codes', this.currentPlaylist.join(','));
+            
+            if (this.playlistName) {
+                urlParams.set('playlist', this.playlistName);
+            }
+            
+            if (this.playlistTimestamp) {
+                urlParams.set('timestamp', this.playlistTimestamp);
+            }
+        }
+        
+        // Remover parâmetros do modo código
+        urlParams.delete('codes');
+        
+        // Atualizar URL com rota padronizada
+        const basePath = '/pesquisador-louvores-simples/';
+        const newUrl = `${basePath}${urlParams.toString() ? '?' + urlParams.toString() : ''}`;
+        window.history.replaceState({}, '', newUrl);
+        
+        console.log('✅ Migração concluída. Playlist preservada em playlist_codes');
+        
+        // Opcional: recarregar página para ativar modo pesquisa
+        // window.location.reload();
+    }
+
+    /**
+     * Sincroniza mudanças locais com a URL (playlist_codes)
      */
     syncToURLManager() {
-        if (window.urlCodeManager) {
-            // Atualizar códigos no URLCodeManager
-            window.urlCodeManager.codes = [...this.currentPlaylist];
-            window.urlCodeManager.playlistName = this.playlistName;
-            window.urlCodeManager.updateURL();
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        if (this.currentPlaylist.length > 0) {
+            // Adicionar playlist_codes à URL
+            urlParams.set('playlist_codes', this.currentPlaylist.join(','));
             
-            console.log('🔗 Sincronizado com URLCodeManager:', this.currentPlaylist);
+            if (this.playlistName) {
+                urlParams.set('playlist', this.playlistName);
+            }
+            
+            if (this.playlistTimestamp) {
+                urlParams.set('timestamp', this.playlistTimestamp);
+            }
+        } else {
+            // Remover playlist_codes se playlist estiver vazia
+            urlParams.delete('playlist_codes');
+            urlParams.delete('playlist');
+            urlParams.delete('timestamp');
         }
+        
+        // Atualizar URL sem recarregar a página
+        const newUrl = `${window.location.pathname}${urlParams.toString() ? '?' + urlParams.toString() : ''}`;
+        window.history.replaceState({}, '', newUrl);
+        
+        console.log('🔗 Playlist sincronizada com playlist_codes na URL:', this.currentPlaylist);
     }
 
     hasLouvor(codigo) {
@@ -636,7 +701,9 @@ class PlaylistManager {
         const name = this.playlistName || this.generateDefaultName();
         const timestamp = this.generateTimestamp(); // Gerar timestamp no momento do compartilhamento
         const codes = this.currentPlaylist.join(',');
-        const baseUrl = window.location.origin + window.location.pathname;
+        const baseUrl = window.location.origin + '/pesquisador-louvores-simples/';
+        
+        // Compartilhar apenas com 'codes' (modo código), não 'playlist_codes'
         const shareUrl = `${baseUrl}?codes=${codes}&playlist=${encodeURIComponent(name)}&timestamp=${encodeURIComponent(timestamp)}`;
 
         navigator.clipboard.writeText(shareUrl).then(() => {
@@ -849,4 +916,11 @@ if (typeof window !== 'undefined') {
     } else {
         console.log('⚠️ Instância global do PlaylistManager já existe, reutilizando:', window.playlistManager.instanceId);
     }
+    
+    // Expor função global para migração de modo
+    window.migratePlaylistToSearchMode = () => {
+        if (window.playlistManager) {
+            window.playlistManager.migrateToSearchMode();
+        }
+    };
 }

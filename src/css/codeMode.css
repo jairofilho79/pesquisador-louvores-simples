@@ -76,12 +76,18 @@
     font-size: 16px;
 }
 
-.back-to-search-btn {
-    background: #6c757d;
+.share-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+.edit-btn {
+    background: #007bff;
     color: white;
-    text-decoration: none;
+    border: none;
     padding: 12px 20px;
     border-radius: 6px;
+    cursor: pointer;
     font-size: 14px;
     font-weight: bold;
     transition: background 0.3s;
@@ -90,14 +96,41 @@
     gap: 8px;
 }
 
-.back-to-search-btn:hover {
-    background: #5a6268;
-    text-decoration: none;
-    color: white;
+.edit-btn:hover {
+    background: #0056b3;
 }
 
-.back-to-search-btn span {
+.edit-btn span {
     font-size: 16px;
+}
+
+.edit-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+.copy-url-btn {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.copy-url-btn:hover {
+    background: #5a6268;
+}
+
+.copy-url-btn svg {
+    width: 16px;
+    height: 16px;
 }
 
 /* Informações da playlist */

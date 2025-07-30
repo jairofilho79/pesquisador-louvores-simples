@@ -9,6 +9,22 @@ class URLCodeManager {
         this.init();
     }
 
+    /**
+     * Padroniza a rota base para produção e desenvolvimento
+     */
+    getBasePath() {
+        return '/pesquisador-louvores-simples/';
+    }
+
+    /**
+     * Constrói URL completa com rota padronizada
+     */
+    buildUrl(params = '') {
+        const basePath = this.getBasePath();
+        const fullUrl = window.location.origin + basePath;
+        return params ? `${fullUrl}?${params}` : fullUrl;
+    }
+
     init() {
         // Verificar se há códigos na URL ao carregar
         this.parseURLParams();
@@ -263,11 +279,22 @@ class URLCodeManager {
                     ` : ''}
                     <div class="code-mode-actions">
                         <button id="share-playlist-btn" class="share-btn">
-                            <span>🔗</span> Compartilhar Lista
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="3">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            Nova Lista
                         </button>
-                        <a href="/pesquisador-louvores-simples/" class="back-to-search-btn">
-                            <span>🔍</span> Voltar para Pesquisa
-                        </a>
+                        <button id="edit-playlist-btn" class="edit-btn">
+                            <span>✏️</span> Editar Lista
+                        </button>
+                        <button id="copy-url-btn" class="copy-url-btn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="2">
+                                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                            </svg>
+                            Copiar URL
+                        </button>
                     </div>
                 </div>
                 
@@ -297,7 +324,17 @@ class URLCodeManager {
     bindCodeModeEvents() {
         const shareBtn = document.getElementById('share-playlist-btn');
         if (shareBtn) {
-            shareBtn.addEventListener('click', () => this.sharePlaylist());
+            shareBtn.addEventListener('click', () => this.createNewList());
+        }
+
+        const editBtn = document.getElementById('edit-playlist-btn');
+        if (editBtn) {
+            editBtn.addEventListener('click', () => this.editCurrentList());
+        }
+
+        const copyUrlBtn = document.getElementById('copy-url-btn');
+        if (copyUrlBtn) {
+            copyUrlBtn.addEventListener('click', () => this.copyCurrentUrl());
         }
     }
 
@@ -549,7 +586,10 @@ class URLCodeManager {
     /**
      * Compartilha a playlist atual
      */
-    sharePlaylist() {
+    /**
+     * Cria uma nova lista (abre em nova aba)
+     */
+    createNewList() {
         if (this.codes.length === 0) {
             alert('Nenhum código para compartilhar');
             return;
@@ -564,20 +604,64 @@ class URLCodeManager {
         const timestamp = `${date} ${time}`;
         
         const codes = this.codes.join(',');
-        const baseUrl = window.location.origin + window.location.pathname;
-        const shareUrl = `${baseUrl}?codes=${codes}&playlist=${encodeURIComponent(name)}&timestamp=${encodeURIComponent(timestamp)}`;
+        const params = `codes=${codes}&playlist=${encodeURIComponent(name)}&timestamp=${encodeURIComponent(timestamp)}`;
+        const shareUrl = this.buildUrl(params);
         
-        console.log('🔗 Compartilhando playlist:', { name, timestamp, codes: this.codes });
+        console.log('🔗 Criando nova lista:', { name, timestamp, codes: this.codes });
+        
+        // Abrir em nova aba
+        window.open(shareUrl, '_blank');
+        this.showShareFeedback('Nova lista aberta em nova aba!');
+    }
+
+    /**
+     * Edita a lista atual (migra para modo pesquisa preservando dados)
+     */
+    editCurrentList() {
+        if (this.codes.length === 0) {
+            alert('Nenhum código na lista para editar');
+            return;
+        }
+
+        console.log('✏️ Editando lista atual, migrando para modo pesquisa...');
+        
+        // Usar a função global exposta pelo PlaylistManager
+        if (window.migratePlaylistToSearchMode) {
+            // Primeiro, sincronizar dados atuais com o PlaylistManager
+            if (window.playlistManager) {
+                window.playlistManager.currentPlaylist = [...this.codes];
+                window.playlistManager.playlistName = this.playlistName || '';
+                window.playlistManager.playlistTimestamp = this.playlistTimestamp || '';
+            }
+            
+            // Migrar preservando dados
+            window.migratePlaylistToSearchMode();
+            
+            // Recarregar página para ativar modo pesquisa
+            window.location.reload();
+        } else {
+            console.error('Função de migração não disponível');
+            alert('Erro: Funcionalidade de edição não disponível');
+        }
+    }
+
+    /**
+     * Copia a URL atual para a área de transferência
+     */
+    copyCurrentUrl() {
+        const currentUrl = window.location.href;
+        
+        console.log('📋 Copiando URL atual:', currentUrl);
         
         if (navigator.clipboard) {
-            navigator.clipboard.writeText(shareUrl).then(() => {
-                this.showShareFeedback('Link copiado para a área de transferência!');
+            navigator.clipboard.writeText(currentUrl).then(() => {
+                this.showShareFeedback('URL copiada para a área de transferência!');
             }).catch(err => {
-                console.error('Erro ao copiar para clipboard:', err);
-                this.showShareUrlDialog(shareUrl);
+                console.error('Erro ao copiar URL para clipboard:', err);
+                this.showShareUrlDialog(currentUrl);
             });
         } else {
-            this.showShareUrlDialog(shareUrl);
+            this.showShareUrlDialog(currentUrl);
         }
     }
 
