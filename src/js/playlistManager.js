@@ -33,9 +33,10 @@ class PlaylistManager {
         // Adicionar botões aos resultados existentes
         setTimeout(() => this.addPlaylistButtonsToResults(), 100);
         
-        // Verificar novamente a sincronização após um delay (caso URL manager não estivesse pronto)
+        // Verificar novamente a sincronização após um delay se há playlist_codes na URL
         setTimeout(() => {
-            if (window.urlCodeManager && window.urlCodeManager.getCodeMode() && this.currentPlaylist.length === 0) {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('playlist_codes') && this.currentPlaylist.length === 0) {
                 console.log('🔄 Tentando sincronizar novamente...');
                 this.syncWithURLManager();
             }
@@ -54,6 +55,13 @@ class PlaylistManager {
         const urlPlaylistName = urlParams.get('playlist');
         const urlPlaylistTimestamp = urlParams.get('timestamp');
         
+        console.log('DEBUG - URL params:', {
+            playlistCodes,
+            urlPlaylistName,
+            urlPlaylistTimestamp,
+            currentURL: window.location.href
+        });
+        
         if (playlistCodes) {
             // Atualizar estado local com playlist_codes
             this.currentPlaylist = playlistCodes.split(',').filter(code => code.trim());
@@ -61,10 +69,14 @@ class PlaylistManager {
             this.playlistTimestamp = urlPlaylistTimestamp || null;
             
             console.log(`✅ Playlist sincronizada com ${this.currentPlaylist.length} códigos de playlist_codes`);
+            console.log('DEBUG - Códigos carregados:', this.currentPlaylist);
+        } else {
+            console.log('ℹ️ Nenhum playlist_codes encontrado na URL');
         }
         // Nota: Removida a leitura de 'codes' - PlaylistManager trabalha apenas com 'playlist_codes'
         
         // Atualizar interface
+        console.log('DEBUG - Atualizando interface...');
         this.updateInterface();
         
         // Aguardar DOM estar pronto e depois atualizar botões
@@ -300,12 +312,23 @@ class PlaylistManager {
     }
 
     updateInterface() {
+        console.log('DEBUG - updateInterface chamado, playlist length:', this.currentPlaylist.length);
+        
         const countElement = document.querySelector('.playlist-count');
         const itemsContainer = document.getElementById('playlist-items');
         const nameInput = document.getElementById('playlist-name');
         const shareBtn = document.getElementById('playlist-share-btn');
         const clearBtn = document.getElementById('playlist-clear-btn');
         const toggleBtn = document.getElementById('playlist-toggle-btn');
+
+        console.log('DEBUG - Elementos encontrados:', {
+            countElement: !!countElement,
+            itemsContainer: !!itemsContainer,
+            nameInput: !!nameInput,
+            shareBtn: !!shareBtn,
+            clearBtn: !!clearBtn,
+            toggleBtn: !!toggleBtn
+        });
 
         if (countElement) {
             countElement.textContent = this.currentPlaylist.length;
@@ -330,8 +353,10 @@ class PlaylistManager {
 
         if (itemsContainer) {
             if (hasItems) {
+                console.log('DEBUG - Chamando displayPlaylistItems...');
                 this.displayPlaylistItems(itemsContainer);
             } else {
+                console.log('DEBUG - Exibindo playlist vazia...');
                 itemsContainer.innerHTML = `
                     <div class="empty-playlist">
                         <p>Nenhum louvor adicionado ainda</p>

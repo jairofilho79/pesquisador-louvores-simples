@@ -52,10 +52,11 @@ try {
             console.log('PlaylistManager já existe, reutilizando instância:', window.playlistManager.instanceId);
         }
         
-        // Forçar sincronização se URL manager já estiver pronto
+        // Forçar sincronização se há playlist_codes na URL (independente do modo)
         setTimeout(() => {
-            if (window.urlCodeManager && window.urlCodeManager.getCodeMode()) {
-                console.log('🔄 Forçando sincronização URL → Playlist...');
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('playlist_codes')) {
+                console.log('🔄 Forçando sincronização playlist_codes → Playlist...');
                 window.playlistManager.syncWithURLManager();
             }
         }, 100);
