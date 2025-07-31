@@ -415,7 +415,7 @@
 /* Desktop e Tablet: Adicionar padding-top para compensar barra fixa */
 @media (min-width: 768px) {
   body.has-pages-bar {
-    padding-top: var(--pages-bar-height-desktop);
+    padding-top: 100px; /* 70px da barra + 30px de margem */
   }
 }
 
@@ -929,7 +929,7 @@ body.has-pages-bar {
     background: var(--background-color, #4B2D2B);
     min-height: 100vh;
     margin: 0;
-    padding: 0;
+    /* Removido padding: 0 para não conflitar com o padding-top */
 }
 
 /* Responsividade para mobile */
