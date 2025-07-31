@@ -600,7 +600,7 @@ class URLCodeManager {
      */
     editCurrentList() {
         if (this.codes.length === 0) {
-            alert('Nenhum código para compartilhar');
+            alert('Nenhum código para editar');
             return;
         }
         
@@ -613,14 +613,14 @@ class URLCodeManager {
         const timestamp = `${date} ${time}`;
         
         const codes = this.codes.join(',');
-        const params = `codes=${codes}&playlist=${encodeURIComponent(name)}&timestamp=${encodeURIComponent(timestamp)}`;
+        const params = `playlist_codes=${codes}&playlist=${encodeURIComponent(name)}&timestamp=${encodeURIComponent(timestamp)}`;
         const shareUrl = this.buildUrl(params);
         
         console.log('🔗 Editando lista atual:', { name, timestamp, codes: this.codes });
         
         // Abrir em nova aba
         window.open(shareUrl, '_blank');
-        this.showShareFeedback('Lista aberta para edição em nova aba!');
+        this.showShareFeedback('Lista aberta para edição no modo pesquisa!');
     }
 
     /**
