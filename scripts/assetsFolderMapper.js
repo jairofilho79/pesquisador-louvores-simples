@@ -321,6 +321,12 @@ async function main() {
         // Gerar arquivo JavaScript com os louvores
         await mapper.generateJavaScriptFile(result.louvores, 'assets2-louvores.js');
         
+        // NOVO: Consolidar metadados de páginas e outros
+        console.log('\n=== Consolidando Metadados ===');
+        const MetadataConsolidator = require('./metadataConsolidator.js');
+        const consolidator = new MetadataConsolidator();
+        await consolidator.consolidateMetadata();
+        
         console.log('\n=== Resumo ===');
         console.log(`Total de louvores: ${result.louvores.length}`);
         console.log(`Gerado em: ${result.generatedAt}`);

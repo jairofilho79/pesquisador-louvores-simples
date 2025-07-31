@@ -6,6 +6,7 @@
     "dev": "http-server . -c-1 --fallback index.html -o",
     "build": "cd scripts && node build-deploy.js",
     "map-assets": "cd scripts && node assetsFolderMapper.js && node generateDeterministicCodes.js",
+    "consolidate-metadata": "cd scripts && node metadataConsolidator.js",
     "test": "http-server . -c-1 --fallback test-asset-mapper.html -o"
   },
   "devDependencies": {

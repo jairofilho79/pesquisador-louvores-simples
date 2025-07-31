@@ -1,6 +1,6 @@
 // Louvores mapeados automaticamente da pasta assets2
-// Gerado em: 2025-07-30T13:10:11.285Z
-// Versão: 20250730.fa3e6425
+// Gerado em: 2025-07-31T02:45:14.597Z
+// Versão: 20250731.fa3e6425
 // Total de louvores: 2093
 
 window.louvoresAssets2 = [
@@ -46029,8 +46029,8 @@ window.louvoresAssets2 = [
 
 // Metadados da versão
 window.louvoresAssets2Meta = {
-    version: "20250730.fa3e6425",
-    generatedAt: "2025-07-30T13:10:11.291Z",
+    version: "20250731.fa3e6425",
+    generatedAt: "2025-07-31T02:45:14.601Z",
     totalLouvores: 2093,
     contentHash: "fa3e6425"
 };

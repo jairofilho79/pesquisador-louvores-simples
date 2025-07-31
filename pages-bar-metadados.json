@@ -1,0 +1,41 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2025-07-30",
+  "pages": [
+    {
+      "id": "home",
+      "nome": "Início",
+      "arquivo": "index.html",
+      "icone": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\"/><polyline points=\"9,22 9,12 15,12 15,22\"/></svg>",
+      "descricao": "Página principal da coletânea digital",
+      "ativo": true,
+      "ordem": 1
+    },
+    {
+      "id": "biblioteca",
+      "nome": "Biblioteca",
+      "arquivo": "biblioteca.html",
+      "icone": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M2 20h20v1H2z\"/><path d=\"M2 16h20v1H2z\"/><path d=\"M2 12h20v1H2z\"/><path d=\"M2 8h20v1H2z\"/><path d=\"M2 4h20v1H2z\"/><rect x=\"3\" y=\"4.5\" width=\"1.5\" height=\"3.5\" fill=\"currentColor\" opacity=\"0.8\"/><rect x=\"4.8\" y=\"4.5\" width=\"1.2\" height=\"3.5\" fill=\"currentColor\" opacity=\"0.6\"/><rect x=\"6.2\" y=\"4.5\" width=\"1.8\" height=\"3.5\" fill=\"currentColor\" opacity=\"0.9\"/><rect x=\"8.2\" y=\"4.5\" width=\"1.3\" height=\"3.5\" fill=\"currentColor\" opacity=\"0.7\"/><rect x=\"3.5\" y=\"8.5\" width=\"1.2\" height=\"3.5\" fill=\"currentColor\" opacity=\"0.7\"/><rect x=\"5\" y=\"8.5\" width=\"1.6\" height=\"3.5\" fill=\"currentColor\" opacity=\"0.8\"/><rect x=\"6.8\" y=\"8.5\" width=\"1.4\" height=\"3.5\" fill=\"currentColor\" opacity=\"0.6\"/><rect x=\"8.4\" y=\"8.5\" width=\"1.1\" height=\"3.5\" fill=\"currentColor\" opacity=\"0.9\"/><rect x=\"3\" y=\"12.5\" width=\"1.7\" height=\"3.5\" fill=\"currentColor\" opacity=\"0.8\"/><rect x=\"5\" y=\"12.5\" width=\"1.3\" height=\"3.5\" fill=\"currentColor\" opacity=\"0.7\"/><rect x=\"6.5\" y=\"12.5\" width=\"1.5\" height=\"3.5\" fill=\"currentColor\" opacity=\"0.9\"/><rect x=\"15\" y=\"4.5\" width=\"1.4\" height=\"3.5\" fill=\"currentColor\" opacity=\"0.6\"/><rect x=\"16.6\" y=\"4.5\" width=\"1.2\" height=\"3.5\" fill=\"currentColor\" opacity=\"0.8\"/><rect x=\"18\" y=\"4.5\" width=\"1.6\" height=\"3.5\" fill=\"currentColor\" opacity=\"0.7\"/><rect x=\"14.5\" y=\"8.5\" width=\"1.3\" height=\"3.5\" fill=\"currentColor\" opacity=\"0.9\"/><rect x=\"16\" y=\"8.5\" width=\"1.5\" height=\"3.5\" fill=\"currentColor\" opacity=\"0.6\"/><rect x=\"17.7\" y=\"8.5\" width=\"1.2\" height=\"3.5\" fill=\"currentColor\" opacity=\"0.8\"/><rect x=\"15.2\" y=\"12.5\" width=\"1.6\" height=\"3.5\" fill=\"currentColor\" opacity=\"0.7\"/><rect x=\"17\" y=\"12.5\" width=\"1.3\" height=\"3.5\" fill=\"currentColor\" opacity=\"0.9\"/><rect x=\"18.5\" y=\"12.5\" width=\"1.2\" height=\"3.5\" fill=\"currentColor\" opacity=\"0.6\"/><path d=\"M1 4v16h1V4z\"/><path d=\"M22 4v16h1V4z\"/></svg>",
+      "descricao": "Biblioteca digital com materiais organizados",
+      "ativo": false,
+      "ordem": 2
+    }
+  ],
+  "configuracao": {
+    "cores": {
+      "background": "#4B2D2B",
+      "borda": "#D4AF37",
+      "texto": "#FFFFFF",
+      "hover": "#5A3532",
+      "ativo": "#6B453F"
+    },
+    "breakpoints": {
+      "mobile": "768px",
+      "tablet": "1024px"
+    },
+    "animacoes": {
+      "hover": "0.3s ease",
+      "click": "0.15s ease"
+    }
+  }
+}
