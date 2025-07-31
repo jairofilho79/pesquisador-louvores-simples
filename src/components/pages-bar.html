@@ -1,0 +1,39 @@
+<!-- Barra de Navegação Responsiva -->
+<nav id="pages-bar" class="pages-bar" role="navigation" aria-label="Navegação principal">
+    <div class="pages-bar-container">
+        <!-- Container dos itens de navegação -->
+        <ul class="pages-bar-items" id="pages-bar-items">
+            <!-- Itens serão carregados dinamicamente via JavaScript -->
+        </ul>
+        
+        <!-- Toggle para mobile (hamburguer) -->
+        <button 
+            class="pages-bar-toggle" 
+            id="pages-bar-toggle" 
+            aria-label="Abrir/fechar menu de navegação"
+            aria-expanded="false"
+        >
+            <span class="pages-bar-toggle-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </span>
+        </button>
+    </div>
+    
+    <!-- Overlay para mobile quando menu está aberto -->
+    <div class="pages-bar-overlay" id="pages-bar-overlay"></div>
+</nav>
+
+<!-- Template para itens da barra (será clonado via JS) -->
+<template id="pages-bar-item-template">
+    <li class="pages-bar-item">
+        <a href="#" class="pages-bar-link" role="button" tabindex="0">
+            <div class="pages-bar-icon-container">
+                <!-- Ícone será inserido aqui -->
+            </div>
+            <span class="pages-bar-text">Nome da Página</span>
+            <div class="pages-bar-tooltip">Descrição da página</div>
+        </a>
+    </li>
+</template>

@@ -1,4 +1,4 @@
-// Arquivo gerado automaticamente em 2025-07-31T02:46:11.186Z
+// Arquivo gerado automaticamente em 2025-07-31T02:54:07.179Z
 // NÃO EDITE MANUALMENTE - Use os scripts de build para regenerar
 
 window.METADATA_CONSOLIDATED = {
@@ -92260,7 +92260,7 @@ window.METADATA_CONSOLIDATED = {
     ],
     "generatedAt": "2025-07-31T02:45:14.561Z"
   },
-  "generatedAt": "2025-07-31T02:46:11.186Z",
+  "generatedAt": "2025-07-31T02:54:07.179Z",
   "version": "1.0.0"
 };
 
