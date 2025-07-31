@@ -20,7 +20,10 @@
     <link rel="stylesheet" href="src/css/pages-bar.css">
 </head>
 
-<body>
+<body class="has-pages-bar">
+    <!-- Pages Bar Container -->
+    <div id="pages-bar-container"></div>
+    
     <!-- Loading indicator -->
     <div id="simple-loader" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(52, 58, 64, 0.95); display: flex; align-items: center; justify-content: center; z-index: 10000; backdrop-filter: blur(5px);">
         <div style="text-align: center; color: white;">
@@ -219,6 +222,17 @@
                 }, 500);
 
                 console.log('🎉 Coletânea Digital pronta para uso!');
+                
+                // Inicializar Pages Bar
+                try {
+                    const pagesBar = new PagesBar({
+                        containerId: 'pages-bar-container',
+                        currentPage: 'home'
+                    });
+                    console.log('✅ Pages Bar inicializada');
+                } catch (error) {
+                    console.error('❌ Erro ao inicializar Pages Bar:', error);
+                }
             }
         }
 

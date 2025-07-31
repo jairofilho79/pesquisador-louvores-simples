@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca - Pesquisador de Louvores</title>
+    
+    <!-- CSS Principal -->
+    <link rel="stylesheet" href="src/css/pesquisador-simples.css">
+    <link rel="stylesheet" href="src/css/search.css">
+    <link rel="stylesheet" href="src/css/styles.css">
+    <!-- CSS da Pages Bar -->
+    <link rel="stylesheet" href="src/css/pages-bar.css">
+    
+    <!-- Fontes -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Meta tags -->
+    <meta name="description" content="Biblioteca de louvores - Acesse nossa coleção completa de músicas cristãs organizadas">
+    <meta name="keywords" content="biblioteca, louvores, músicas cristãs, cânticos, hinos">
+    <meta name="author" content="Pesquisador de Louvores">
+</head>
+<body class="has-pages-bar">
+    <!-- Pages Bar Container -->
+    <div id="pages-bar-container"></div>
+    
+    <!-- Conteúdo Principal -->
+    <main class="main-content">
+        <div class="biblioteca-container">
+            <h2 class="biblioteca-title">Aqui será uma linda biblioteca</h2>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="./metadata-consolidated.js"></script>
+    <script src="src/js/pages-bar.js"></script>
+    
+    <!-- Inicialização da Pages Bar -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                const pagesBar = new PagesBar({
+                    containerId: 'pages-bar-container',
+                    currentPage: 'biblioteca'
+                });
+                console.log('✅ Pages Bar inicializada para biblioteca');
+            } catch (error) {
+                console.error('❌ Erro ao inicializar Pages Bar:', error);
+            }
+        });
+    </script>
+</body>
+</html>
