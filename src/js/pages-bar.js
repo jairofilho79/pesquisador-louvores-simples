@@ -90,28 +90,45 @@ class PagesBar {
      */
     async loadPageData() {
         try {
+            console.log('📊 Carregando dados das páginas...');
+            
             // Aguardar carregamento dos metadados se necessário
             if (typeof window.getPagesBarData !== 'function') {
+                console.log('⏳ Aguardando metadados consolidados...');
                 await this.waitForMetadata();
             }
             
             const pagesData = window.getPagesBarData();
-            this.state.pages = pagesData.pages || [];
-            this.config = { ...this.config, ...pagesData.configuracao };
             
-            console.log(`📄 Carregadas ${this.state.pages.length} páginas`);
+            // Validar dados recebidos
+            if (!pagesData || !pagesData.pages) {
+                throw new Error('Dados de páginas inválidos');
+            }
+            
+            this.state.pages = pagesData.pages || [];
+            
+            // Mesclar configurações, priorizando as do arquivo
+            if (pagesData.configuracao) {
+                this.config = { ...this.config, ...pagesData.configuracao };
+                
+                // Aplicar cores CSS customizadas se existirem
+                if (pagesData.configuracao.cores) {
+                    this.applyCSSCustomProperties(pagesData.configuracao.cores);
+                }
+            }
+            
+            // Cache dos dados para performance
+            this.cachePageData(pagesData);
+            
+            console.log(`✅ Carregadas ${this.state.pages.length} páginas:`);
+            this.state.pages.forEach(page => {
+                console.log(`  - ${page.nome} (${page.arquivo}) - Ativo: ${page.ativo !== false}`);
+            });
             
         } catch (error) {
             console.error('❌ Erro ao carregar dados das páginas:', error);
-            // Fallback com página padrão
-            this.state.pages = [{
-                id: 'home',
-                nome: 'Início',
-                arquivo: 'index.html',
-                icone: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>',
-                ativo: true,
-                ordem: 1
-            }];
+            // Fallback com dados mínimos
+            this.loadFallbackData();
         }
     }
 
@@ -131,6 +148,76 @@ class PagesBar {
             setTimeout(() => reject(new Error('Timeout aguardando metadados')), timeout);
             checkMetadata();
         });
+    }
+
+    /**
+     * Aplica propriedades CSS customizadas
+     */
+    applyCSSCustomProperties(cores) {
+        const root = document.documentElement;
+        
+        if (cores.background) root.style.setProperty('--pages-bar-bg', cores.background);
+        if (cores.borda) root.style.setProperty('--pages-bar-border', cores.borda);
+        if (cores.texto) root.style.setProperty('--pages-bar-text', cores.texto);
+        if (cores.hover) root.style.setProperty('--pages-bar-hover', cores.hover);
+        if (cores.ativo) root.style.setProperty('--pages-bar-active', cores.ativo);
+        
+        console.log('🎨 Propriedades CSS aplicadas:', cores);
+    }
+
+    /**
+     * Cache dos dados da página para performance
+     */
+    cachePageData(pagesData) {
+        try {
+            const cacheKey = 'pages-bar-data';
+            const cacheData = {
+                data: pagesData,
+                timestamp: Date.now(),
+                version: pagesData.version || '1.0.0'
+            };
+            
+            localStorage.setItem(cacheKey, JSON.stringify(cacheData));
+            console.log('💾 Dados em cache salvos');
+        } catch (error) {
+            console.warn('⚠️ Não foi possível salvar cache:', error);
+        }
+    }
+
+    /**
+     * Carrega dados de fallback em caso de erro
+     */
+    loadFallbackData() {
+        console.log('🔄 Carregando dados de fallback...');
+        
+        // Tentar cache primeiro
+        try {
+            const cached = localStorage.getItem('pages-bar-data');
+            if (cached) {
+                const cacheData = JSON.parse(cached);
+                // Usar cache se for recente (menos de 1 hora)
+                if (Date.now() - cacheData.timestamp < 3600000) {
+                    this.state.pages = cacheData.data.pages || [];
+                    console.log('✅ Dados carregados do cache');
+                    return;
+                }
+            }
+        } catch (error) {
+            console.warn('⚠️ Erro ao carregar cache:', error);
+        }
+        
+        // Dados mínimos de emergência
+        this.state.pages = [{
+            id: 'home',
+            nome: 'Início',
+            arquivo: 'index.html',
+            icone: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>',
+            descricao: 'Página principal da coletânea digital',
+            ativo: true,
+            ordem: 1
+        }];
+        
+        console.log('⚠️ Usando dados de fallback mínimos');
     }
 
     /**
@@ -364,18 +451,251 @@ class PagesBar {
     handleKeyPress(e) {
         // ESC para fechar menu mobile
         if (e.key === 'Escape' && this.state.isMobile && this.state.isOpen) {
+            e.preventDefault();
             this.closeMobileMenu();
+            return;
         }
         
-        // Atalhos numéricos para páginas (1-9)
+        // Atalhos numéricos para páginas (Ctrl + 1-9)
         if (e.ctrlKey && e.key >= '1' && e.key <= '9') {
             const pageIndex = parseInt(e.key) - 1;
             const pages = this.state.pages.filter(p => p.ativo !== false);
             if (pages[pageIndex]) {
                 e.preventDefault();
                 this.navigateToPage(pages[pageIndex]);
+                this.showKeyboardFeedback(pages[pageIndex].nome);
             }
+            return;
         }
+        
+        // Alt + M para toggle do menu mobile
+        if (e.altKey && e.key.toLowerCase() === 'm' && this.state.isMobile) {
+            e.preventDefault();
+            this.handleToggleClick(e);
+            return;
+        }
+        
+        // Alt + H para home
+        if (e.altKey && e.key.toLowerCase() === 'h') {
+            const homePage = this.state.pages.find(p => p.id === 'home' || p.ordem === 1);
+            if (homePage) {
+                e.preventDefault();
+                this.navigateToPage(homePage);
+                this.showKeyboardFeedback('Navegação rápida: ' + homePage.nome);
+            }
+            return;
+        }
+        
+        // Setas para navegação entre páginas (quando menu está focado)
+        if (document.activeElement && document.activeElement.closest('.pages-bar')) {
+            this.handleArrowNavigation(e);
+        }
+        
+        // Ctrl + Alt + P para debug das páginas
+        if (e.ctrlKey && e.altKey && e.key.toLowerCase() === 'p') {
+            e.preventDefault();
+            this.debugPages();
+        }
+    }
+
+    /**
+     * Navegação por setas no teclado
+     */
+    handleArrowNavigation(e) {
+        const currentFocus = document.activeElement;
+        const links = Array.from(this.elements.items.querySelectorAll('.pages-bar-link'));
+        const currentIndex = links.indexOf(currentFocus);
+        
+        if (currentIndex === -1) return;
+        
+        let nextIndex = currentIndex;
+        
+        if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+            nextIndex = (currentIndex + 1) % links.length;
+            e.preventDefault();
+        } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+            nextIndex = currentIndex === 0 ? links.length - 1 : currentIndex - 1;
+            e.preventDefault();
+        } else if (e.key === 'Home') {
+            nextIndex = 0;
+            e.preventDefault();
+        } else if (e.key === 'End') {
+            nextIndex = links.length - 1;
+            e.preventDefault();
+        }
+        
+        if (nextIndex !== currentIndex) {
+            links[nextIndex].focus();
+            this.showKeyboardFeedback(`Navegando: ${links[nextIndex].dataset.pageId}`);
+        }
+    }
+
+    /**
+     * Feedback visual para atalhos de teclado
+     */
+    showKeyboardFeedback(message) {
+        // Remover feedback anterior
+        const existing = document.querySelector('.pages-bar-keyboard-feedback');
+        if (existing) {
+            existing.remove();
+        }
+        
+        // Criar novo feedback
+        const feedback = document.createElement('div');
+        feedback.className = 'pages-bar-keyboard-feedback';
+        feedback.textContent = message;
+        feedback.setAttribute('role', 'status');
+        feedback.setAttribute('aria-live', 'polite');
+        
+        document.body.appendChild(feedback);
+        
+        // Auto-remover após 2 segundos
+        setTimeout(() => {
+            if (feedback.parentNode) {
+                feedback.remove();
+            }
+        }, 2000);
+    }
+
+    /**
+     * Anima a transição entre páginas
+     */
+    async animatePageTransition(pageData) {
+        // Adicionar classe de animação
+        this.elements.container.classList.add('pages-bar-transitioning');
+        
+        try {
+            // Animação de saída (fade out)
+            await this.addTemporaryClass(document.body, 'pages-bar-page-exit', 150);
+            
+            // Aqui a página seria carregada/mudada
+            await this.simulatePageLoad(pageData);
+            
+            // Animação de entrada (fade in)
+            await this.addTemporaryClass(document.body, 'pages-bar-page-enter', 300);
+            
+        } finally {
+            this.elements.container.classList.remove('pages-bar-transitioning');
+        }
+    }
+
+    /**
+     * Simula carregamento de página
+     */
+    async simulatePageLoad(pageData) {
+        return new Promise(resolve => {
+            // Simular delay de carregamento
+            setTimeout(() => {
+                console.log(`Página ${pageData.nome} carregada`);
+                resolve();
+            }, 100);
+        });
+    }
+
+    /**
+     * Adiciona classe temporária com Promise
+     */
+    addTemporaryClass(element, className, duration) {
+        return new Promise(resolve => {
+            element.classList.add(className);
+            setTimeout(() => {
+                element.classList.remove(className);
+                resolve();
+            }, duration);
+        });
+    }
+
+    /**
+     * Adiciona efeitos visuais para feedback
+     */
+    addVisualFeedback(element, type = 'success') {
+        const feedbackClass = `pages-bar-feedback-${type}`;
+        
+        // Remover feedback anterior
+        element.classList.remove('pages-bar-feedback-success', 'pages-bar-feedback-error', 'pages-bar-feedback-warning');
+        
+        // Adicionar novo feedback
+        element.classList.add(feedbackClass);
+        
+        // Auto-remover após animação
+        setTimeout(() => {
+            element.classList.remove(feedbackClass);
+        }, 600);
+    }
+
+    /**
+     * Anima entrada do menu mobile
+     */
+    animateMobileMenuOpen() {
+        if (!this.state.isMobile) return;
+        
+        const overlay = this.elements.container.querySelector('.pages-bar-overlay');
+        const items = this.elements.items;
+        
+        if (overlay) {
+            overlay.style.opacity = '0';
+            overlay.style.display = 'block';
+            
+            // Animar fade in do overlay
+            requestAnimationFrame(() => {
+                overlay.style.transition = 'opacity 0.3s ease';
+                overlay.style.opacity = '1';
+            });
+        }
+        
+        // Animar slide in dos itens
+        items.style.transform = 'translateX(-100%)';
+        requestAnimationFrame(() => {
+            items.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+            items.style.transform = 'translateX(0)';
+        });
+    }
+
+    /**
+     * Anima saída do menu mobile
+     */
+    animateMobileMenuClose() {
+        if (!this.state.isMobile) return;
+        
+        const overlay = this.elements.container.querySelector('.pages-bar-overlay');
+        const items = this.elements.items;
+        
+        return new Promise(resolve => {
+            // Animar slide out dos itens
+            items.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+            items.style.transform = 'translateX(-100%)';
+            
+            // Animar fade out do overlay
+            if (overlay) {
+                overlay.style.transition = 'opacity 0.3s ease';
+                overlay.style.opacity = '0';
+            }
+            
+            // Aguardar animação terminar
+            setTimeout(() => {
+                if (overlay) {
+                    overlay.style.display = 'none';
+                }
+                items.style.transform = '';
+                items.style.transition = '';
+                resolve();
+            }, 300);
+        });
+    }
+
+    /**
+     * Debug das páginas (desenvolvimento)
+     */
+    debugPages() {
+        console.group('🔍 Debug Pages Bar');
+        console.log('Estado atual:', this.state);
+        console.log('Configuração:', this.config);
+        console.log('Elementos DOM:', this.elements);
+        console.log('Páginas ativas:', this.state.pages.filter(p => p.ativo !== false));
+        console.log('Histórico:', this.state.history);
+        console.groupEnd();
+        
+        this.showKeyboardFeedback('Debug info no console');
     }
 
     /**
@@ -389,11 +709,17 @@ class PagesBar {
     /**
      * Abre menu mobile
      */
-    openMobileMenu() {
+    async openMobileMenu() {
         this.state.isOpen = true;
-        this.elements.nav.classList.add('is-open');
+        this.elements.nav.classList.add('is-open', 'mobile-opening');
         this.elements.toggle.setAttribute('aria-expanded', 'true');
         document.body.classList.add('pages-bar-open');
+        
+        // Animar entrada
+        await this.animateMobileMenuOpen();
+        
+        // Remover classe de animação
+        this.elements.nav.classList.remove('mobile-opening');
         
         // Focar no primeiro item
         const firstLink = this.elements.items.querySelector('.pages-bar-link');
@@ -407,9 +733,14 @@ class PagesBar {
     /**
      * Fecha menu mobile
      */
-    closeMobileMenu() {
+    async closeMobileMenu() {
+        this.elements.nav.classList.add('mobile-closing');
+        
+        // Animar saída
+        await this.animateMobileMenuClose();
+        
         this.state.isOpen = false;
-        this.elements.nav.classList.remove('is-open');
+        this.elements.nav.classList.remove('is-open', 'mobile-closing');
         this.elements.toggle.setAttribute('aria-expanded', 'false');
         document.body.classList.remove('pages-bar-open');
         
@@ -425,10 +756,29 @@ class PagesBar {
     navigateToPage(page) {
         console.log(`🔗 Navegando para: ${page.nome} (${page.arquivo})`);
         
+        // Validar página
+        if (!page || !page.id) {
+            console.error('❌ Página inválida para navegação');
+            return;
+        }
+        
+        // Verificar se já estamos na página
+        if (this.state.currentPage === page.id) {
+            console.log('ℹ️ Já estamos na página solicitada');
+            this.closeMobileMenu(); // Apenas fechar menu se mobile
+            return;
+        }
+        
         // Fechar menu mobile se aberto
         if (this.state.isMobile && this.state.isOpen) {
             this.closeMobileMenu();
         }
+        
+        // Mostrar indicador de loading
+        this.showLoadingState(page.id);
+        
+        // Salvar no histórico
+        this.addToHistory(this.state.currentPage, page.id);
         
         // Definir como página ativa
         this.setActivePage(page.id);
@@ -437,18 +787,218 @@ class PagesBar {
         const event = this.dispatchEvent('pagesbar:before-navigate', { 
             from: this.state.currentPage,
             to: page.id,
-            page: page
+            page: page,
+            timestamp: Date.now()
         });
         
         // Se não foi cancelado, navegar
         if (!event.defaultPrevented) {
-            // Navegar para a página
-            if (page.arquivo && page.arquivo !== window.location.pathname.split('/').pop()) {
-                window.location.href = page.arquivo;
+            this.performNavigation(page);
+        } else {
+            // Reverter estado se navegação foi cancelada
+            this.hideLoadingState();
+            console.log('⚠️ Navegação cancelada por event listener');
+        }
+    }
+
+    /**
+     * Executa a navegação efetivamente
+     */
+    async performNavigation(page) {
+        try {
+            // Adicionar feedback visual
+            const activeLink = this.elements.items.querySelector(`[data-page-id="${page.id}"]`);
+            if (activeLink) {
+                this.addVisualFeedback(activeLink, 'success');
             }
             
-            this.dispatchEvent('pagesbar:navigated', { page });
+            // Animar transição
+            await this.animatePageTransition(page);
+            
+            // Verificar se é navegação externa ou interna
+            const currentPath = window.location.pathname.split('/').pop();
+            const isExternalNavigation = page.arquivo && page.arquivo !== currentPath;
+            
+            if (isExternalNavigation) {
+                // Navegação externa (mudança de página)
+                this.navigateExternal(page);
+            } else {
+                // Navegação interna (mesma página, diferentes seções)
+                this.navigateInternal(page);
+            }
+            
+        } catch (error) {
+            console.error('❌ Erro durante navegação:', error);
+            this.hideLoadingState();
+            this.showNavigationError(page, error);
+            
+            // Feedback visual de erro
+            const activeLink = this.elements.items.querySelector(`[data-page-id="${page.id}"]`);
+            if (activeLink) {
+                this.addVisualFeedback(activeLink, 'error');
+            }
         }
+    }
+
+    /**
+     * Navegação para página externa
+     */
+    navigateExternal(page) {
+        console.log(`🌐 Navegação externa: ${page.arquivo}`);
+        
+        // Adicionar delay para UX suave
+        setTimeout(() => {
+            window.location.href = page.arquivo;
+        }, 150);
+        
+        // Evento após navegação (será disparado na nova página)
+        this.dispatchEvent('pagesbar:navigated', { 
+            page, 
+            type: 'external',
+            timestamp: Date.now()
+        });
+    }
+
+    /**
+     * Navegação interna (mesma página)
+     */
+    navigateInternal(page) {
+        console.log(`🏠 Navegação interna: ${page.id}`);
+        
+        // Ocultar loading após um delay mínimo para UX
+        setTimeout(() => {
+            this.hideLoadingState();
+        }, 300);
+        
+        this.dispatchEvent('pagesbar:navigated', { 
+            page, 
+            type: 'internal',
+            timestamp: Date.now()
+        });
+    }
+
+    /**
+     * Mostra estado de loading para uma página
+     */
+    showLoadingState(pageId) {
+        const link = this.elements.items.querySelector(`[data-page-id="${pageId}"]`);
+        if (link) {
+            link.classList.add('is-loading');
+            link.setAttribute('aria-busy', 'true');
+            
+            // Adicionar spinner no ícone
+            const iconContainer = link.querySelector('.pages-bar-icon-container');
+            if (iconContainer) {
+                iconContainer.classList.add('is-loading');
+            }
+        }
+        
+        // Loading geral da barra
+        this.elements.nav.classList.add('is-loading');
+        console.log(`⏳ Loading state ativado para: ${pageId}`);
+    }
+
+    /**
+     * Oculta estado de loading
+     */
+    hideLoadingState() {
+        // Remover loading de todos os links
+        this.elements.items.querySelectorAll('.pages-bar-link').forEach(link => {
+            link.classList.remove('is-loading');
+            link.removeAttribute('aria-busy');
+        });
+        
+        // Remover loading dos ícones
+        this.elements.items.querySelectorAll('.pages-bar-icon-container').forEach(icon => {
+            icon.classList.remove('is-loading');
+        });
+        
+        // Loading geral da barra
+        this.elements.nav.classList.remove('is-loading');
+        console.log('✅ Loading state removido');
+    }
+
+    /**
+     * Adiciona entrada ao histórico de navegação
+     */
+    addToHistory(fromPageId, toPageId) {
+        if (!this.state.history) {
+            this.state.history = [];
+        }
+        
+        const historyEntry = {
+            from: fromPageId,
+            to: toPageId,
+            timestamp: Date.now(),
+            userAgent: navigator.userAgent
+        };
+        
+        // Limitar histórico a 50 entradas
+        this.state.history.push(historyEntry);
+        if (this.state.history.length > 50) {
+            this.state.history.shift();
+        }
+        
+        // Salvar no localStorage para persistência
+        try {
+            localStorage.setItem('pages-bar-history', JSON.stringify(this.state.history));
+        } catch (error) {
+            console.warn('⚠️ Não foi possível salvar histórico:', error);
+        }
+        
+        console.log(`📚 Histórico: ${fromPageId} → ${toPageId}`);
+    }
+
+    /**
+     * Carrega histórico do localStorage
+     */
+    loadHistory() {
+        try {
+            const saved = localStorage.getItem('pages-bar-history');
+            if (saved) {
+                this.state.history = JSON.parse(saved);
+                console.log(`📚 Histórico carregado: ${this.state.history.length} entradas`);
+            }
+        } catch (error) {
+            console.warn('⚠️ Erro ao carregar histórico:', error);
+            this.state.history = [];
+        }
+    }
+
+    /**
+     * Mostra erro de navegação
+     */
+    showNavigationError(page, error) {
+        console.error(`❌ Erro na navegação para ${page.nome}:`, error);
+        
+        // Criar notificação de erro
+        const errorNotification = document.createElement('div');
+        errorNotification.className = 'pages-bar-error-notification';
+        errorNotification.innerHTML = `
+            <div class="pages-bar-error-content">
+                <span class="pages-bar-error-icon">⚠️</span>
+                <span class="pages-bar-error-message">Erro ao navegar para "${page.nome}"</span>
+                <button class="pages-bar-error-close" aria-label="Fechar">&times;</button>
+            </div>
+        `;
+        
+        // Adicionar ao DOM
+        document.body.appendChild(errorNotification);
+        
+        // Auto-remover após 5 segundos
+        setTimeout(() => {
+            if (errorNotification.parentNode) {
+                errorNotification.remove();
+            }
+        }, 5000);
+        
+        // Evento de fechar manual
+        const closeBtn = errorNotification.querySelector('.pages-bar-error-close');
+        closeBtn.addEventListener('click', () => {
+            errorNotification.remove();
+        });
+        
+        this.dispatchEvent('pagesbar:navigation-error', { page, error });
     }
 
     /**
