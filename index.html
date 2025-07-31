@@ -164,6 +164,9 @@
 
                     // 2.5. Carregar componentes de códigos únicos
                     this.updateMessage('Carregando sistema de códigos únicos...');
+                    await this.loadScript('src/js/urlUtils.js');
+                    await new Promise(resolve => setTimeout(resolve, 100));
+
                     await this.loadScript('src/js/urlCodeManager.js');
                     await new Promise(resolve => setTimeout(resolve, 100));
 

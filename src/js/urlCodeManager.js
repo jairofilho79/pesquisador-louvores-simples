@@ -13,13 +13,21 @@ class URLCodeManager {
      * Padroniza a rota base para produção e desenvolvimento
      */
     getBasePath() {
-        return '/pesquisador-louvores-simples/';
+        return window.URLUtils ? window.URLUtils.getBasePath() : '/pesquisador-louvores-simples/';
     }
 
     /**
      * Constrói URL completa com rota padronizada
      */
     buildUrl(params = '') {
+        return window.URLUtils ? window.URLUtils.buildFullUrl(params) : this.buildFallbackUrl(params);
+    }
+
+    /**
+     * Fallback caso URLUtils não esteja disponível
+     */
+    buildFallbackUrl(params = '') {
+        // Usar getBasePath() local em vez de valor fixo
         const basePath = this.getBasePath();
         const fullUrl = window.location.origin + basePath;
         return params ? `${fullUrl}?${params}` : fullUrl;
@@ -278,7 +286,7 @@ class URLCodeManager {
                     </div>
                     ` : ''}
                     <div class="code-mode-actions">
-                        <button id="share-playlist-btn" class="share-btn">
+                        <button id="create-playlist-btn" class="share-btn">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="3">
                                 <line x1="12" y1="5" x2="12" y2="19"></line>
                                 <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -322,7 +330,7 @@ class URLCodeManager {
      * Bind eventos da interface de código
      */
     bindCodeModeEvents() {
-        const shareBtn = document.getElementById('share-playlist-btn');
+        const shareBtn = document.getElementById('create-playlist-btn');
         if (shareBtn) {
             shareBtn.addEventListener('click', () => this.createNewList());
         }
@@ -565,6 +573,7 @@ class URLCodeManager {
         // Limpar container primeiro
         container.innerHTML = '';
         
+        const basePath = window.URLUtils ? window.URLUtils.getBasePath() : '/';
         const noResultsHTML = `
             <div class="no-results-message">
                 <h3>😕 Nenhum louvor encontrado</h3>
@@ -573,7 +582,7 @@ class URLCodeManager {
                     <strong>Códigos pesquisados:</strong> ${this.codes.join(', ')}
                 </div>
                 <p class="suggestion">
-                    💡 Verifique se os códigos estão corretos ou tente uma <a href="/">pesquisa normal</a>.
+                    💡 Verifique se os códigos estão corretos ou tente uma <a href="${basePath}">pesquisa normal</a>.
                 </p>
             </div>
         `;
@@ -587,9 +596,9 @@ class URLCodeManager {
      * Compartilha a playlist atual
      */
     /**
-     * Cria uma nova lista (abre em nova aba)
+     * Edita a lista atual (abre em nova aba)
      */
-    createNewList() {
+    editCurrentList() {
         if (this.codes.length === 0) {
             alert('Nenhum código para compartilhar');
             return;
@@ -607,23 +616,23 @@ class URLCodeManager {
         const params = `codes=${codes}&playlist=${encodeURIComponent(name)}&timestamp=${encodeURIComponent(timestamp)}`;
         const shareUrl = this.buildUrl(params);
         
-        console.log('🔗 Criando nova lista:', { name, timestamp, codes: this.codes });
+        console.log('🔗 Editando lista atual:', { name, timestamp, codes: this.codes });
         
         // Abrir em nova aba
         window.open(shareUrl, '_blank');
-        this.showShareFeedback('Nova lista aberta em nova aba!');
+        this.showShareFeedback('Lista aberta para edição em nova aba!');
     }
 
     /**
-     * Edita a lista atual (migra para modo pesquisa preservando dados)
+     * Cria uma nova lista (migra para modo pesquisa preservando dados)
      */
-    editCurrentList() {
+    createNewList() {
         if (this.codes.length === 0) {
-            alert('Nenhum código na lista para editar');
+            alert('Nenhum código na lista para criar nova lista');
             return;
         }
 
-        console.log('✏️ Editando lista atual, migrando para modo pesquisa...');
+        console.log('✏️ Criando nova lista, migrando para modo pesquisa...');
         
         // Usar a função global exposta pelo PlaylistManager
         if (window.migratePlaylistToSearchMode) {
@@ -637,30 +646,38 @@ class URLCodeManager {
             // Migrar preservando dados
             window.migratePlaylistToSearchMode();
             
-            // Recarregar página para ativar modo pesquisa
-            window.location.reload();
+            // Navegar para modo pesquisa usando URLUtils
+            if (window.URLUtils) {
+                window.URLUtils.navigateTo(''); // Navega para a página base (modo pesquisa)
+            } else {
+                // Fallback
+                window.location.reload();
+            }
         } else {
             console.error('Função de migração não disponível');
-            alert('Erro: Funcionalidade de edição não disponível');
+            alert('Erro: Funcionalidade de criação de lista não disponível');
         }
     }
 
     /**
      * Copia a URL atual para a área de transferência
      */
-    copyCurrentUrl() {
-        const currentUrl = window.location.href;
+    async copyCurrentUrl() {
+        console.log('📋 Copiando URL atual...');
         
-        console.log('📋 Copiando URL atual:', currentUrl);
-        
-        if (navigator.clipboard) {
-            navigator.clipboard.writeText(currentUrl).then(() => {
+        try {
+            if (window.URLUtils) {
+                await window.URLUtils.copyCurrentUrl();
                 this.showShareFeedback('URL copiada para a área de transferência!');
-            }).catch(err => {
-                console.error('Erro ao copiar URL para clipboard:', err);
-                this.showShareUrlDialog(currentUrl);
-            });
-        } else {
+            } else {
+                // Fallback
+                const currentUrl = window.location.href;
+                await navigator.clipboard.writeText(currentUrl);
+                this.showShareFeedback('URL copiada para a área de transferência!');
+            }
+        } catch (error) {
+            console.error('Erro ao copiar URL:', error);
+            const currentUrl = window.location.href;
             this.showShareUrlDialog(currentUrl);
         }
     }

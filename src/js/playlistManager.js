@@ -107,7 +107,7 @@ class PlaylistManager {
                                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
                                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
                                 </svg>
-                                Compartilhar
+                                Copiar e ir
                             </button>
                             <button id="playlist-clear-btn" class="playlist-action-btn clear" disabled>
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
@@ -173,7 +173,7 @@ class PlaylistManager {
         }
 
         if (shareBtn) {
-            console.log(`🔗 [${this.instanceId}] Configurando evento de compartilhar`);
+            console.log(`🔗 [${this.instanceId}] Configurando evento de copiar e ir`);
             
             // Remover listeners anteriores se existirem
             const existingHandler = shareBtn.getAttribute('data-playlist-handler');
@@ -185,11 +185,11 @@ class PlaylistManager {
             shareBtn.setAttribute('data-playlist-handler', this.instanceId);
             
             shareBtn.addEventListener('click', () => {
-                console.log(`🔗 [${this.instanceId}] Botão compartilhar clicado`);
+                console.log(`🔗 [${this.instanceId}] Botão copiar e ir clicado`);
                 this.sharePlaylist();
             });
         } else {
-            console.warn(`⚠️ [${this.instanceId}] Botão compartilhar não encontrado`);
+            console.warn(`⚠️ [${this.instanceId}] Botão copiar e ir não encontrado`);
         }
 
         if (clearBtn) {
@@ -583,15 +583,17 @@ class PlaylistManager {
         // Remover parâmetros do modo código
         urlParams.delete('codes');
         
-        // Atualizar URL com rota padronizada
-        const basePath = '/pesquisador-louvores-simples/';
-        const newUrl = `${basePath}${urlParams.toString() ? '?' + urlParams.toString() : ''}`;
-        window.history.replaceState({}, '', newUrl);
+        // Atualizar URL usando URLUtils se disponível
+        if (window.URLUtils) {
+            window.URLUtils.replaceCurrentUrl(urlParams);
+        } else {
+            // Fallback inteligente com detecção de ambiente
+            const basePath = this.detectEnvironmentFallback();
+            const newUrl = `${basePath}${urlParams.toString() ? '?' + urlParams.toString() : ''}`;
+            window.history.replaceState({}, '', newUrl);
+        }
         
         console.log('✅ Migração concluída. Playlist preservada em playlist_codes');
-        
-        // Opcional: recarregar página para ativar modo pesquisa
-        // window.location.reload();
     }
 
     /**
@@ -618,9 +620,14 @@ class PlaylistManager {
             urlParams.delete('timestamp');
         }
         
-        // Atualizar URL sem recarregar a página
-        const newUrl = `${window.location.pathname}${urlParams.toString() ? '?' + urlParams.toString() : ''}`;
-        window.history.replaceState({}, '', newUrl);
+        // Atualizar URL usando URLUtils se disponível, senão manter comportamento atual
+        if (window.URLUtils) {
+            window.URLUtils.replaceCurrentUrl(urlParams);
+        } else {
+            // Fallback - manter URL atual apenas atualizando parâmetros
+            const newUrl = `${window.location.pathname}${urlParams.toString() ? '?' + urlParams.toString() : ''}`;
+            window.history.replaceState({}, '', newUrl);
+        }
         
         console.log('🔗 Playlist sincronizada com playlist_codes na URL:', this.currentPlaylist);
     }
@@ -681,8 +688,41 @@ class PlaylistManager {
         }
     }
 
+    /**
+     * Fallback inteligente para detecção de ambiente quando URLUtils não está disponível
+     */
+    detectEnvironmentFallback() {
+        const hostname = window.location.hostname;
+        const port = window.location.port;
+        
+        // Regex para detectar ambientes locais (replicando URLUtils)
+        const localPatterns = [
+            /^localhost$/i,
+            /^127\.0\.0\.1$/,
+            /^0\.0\.0\.0$/,
+            /^192\.168\.\d+\.\d+$/,
+            /^10\.\d+\.\d+\.\d+$/,
+            /^172\.(1[6-9]|2\d|3[01])\.\d+\.\d+$/,
+            /.*\.local$/i
+        ];
+        
+        const isLocalHost = localPatterns.some(pattern => pattern.test(hostname));
+        const hasPort = port && port !== '80' && port !== '443';
+        const isLocal = isLocalHost || hasPort;
+        
+        console.log('🌐 Fallback - Detecção de ambiente:', {
+            hostname,
+            port,
+            isLocalHost,
+            hasPort,
+            isLocal
+        });
+        
+        return isLocal ? '/' : '/pesquisador-louvores-simples/';
+    }
+
     sharePlaylist() {
-        console.log(`🔗 [${this.instanceId}] sharePlaylist() chamado`);
+        console.log(`🔗 [${this.instanceId}] sharePlaylist() chamado - Copiar e ir`);
         console.log(`📋 [${this.instanceId}] Estado atual da playlist:`, {
             length: this.currentPlaylist.length,
             items: this.currentPlaylist,
@@ -696,19 +736,35 @@ class PlaylistManager {
             return;
         }
 
-        console.log(`✅ [${this.instanceId}] Lista não está vazia, prosseguindo com compartilhamento`);
+        console.log(`✅ [${this.instanceId}] Lista não está vazia, prosseguindo com copiar e ir`);
         
         const name = this.playlistName || this.generateDefaultName();
         const timestamp = this.generateTimestamp(); // Gerar timestamp no momento do compartilhamento
         const codes = this.currentPlaylist.join(',');
-        const baseUrl = window.location.origin + '/pesquisador-louvores-simples/';
         
-        // Compartilhar apenas com 'codes' (modo código), não 'playlist_codes'
-        const shareUrl = `${baseUrl}?codes=${codes}&playlist=${encodeURIComponent(name)}&timestamp=${encodeURIComponent(timestamp)}`;
+        // Usar URLUtils se disponível, senão fallback inteligente
+        let shareUrl;
+        if (window.URLUtils) {
+            const params = `codes=${codes}&playlist=${encodeURIComponent(name)}&timestamp=${encodeURIComponent(timestamp)}`;
+            shareUrl = window.URLUtils.buildFullUrl(params);
+        } else {
+            // Fallback inteligente com detecção de ambiente
+            const basePath = this.detectEnvironmentFallback();
+            const baseUrl = window.location.origin + basePath;
+            shareUrl = `${baseUrl}?codes=${codes}&playlist=${encodeURIComponent(name)}&timestamp=${encodeURIComponent(timestamp)}`;
+            console.warn(`🔗 [${this.instanceId}] URLUtils não disponível, usando fallback inteligente: ${shareUrl}`);
+        }
 
+        console.log(`🔗 [${this.instanceId}] URL gerada para compartilhamento:`, shareUrl);
+        
+        // Copiar para área de transferência e abrir em nova aba (modo código)
         navigator.clipboard.writeText(shareUrl).then(() => {
-            this.showFeedback('Link copiado para a área de transferência!');
+            this.showFeedback('Link copiado! Abrindo em nova aba...');
+            // Abrir em nova aba no modo código
+            window.open(shareUrl, '_blank');
         }).catch(() => {
+            // Se falhar ao copiar, ainda assim abre em nova aba e mostra o link
+            window.open(shareUrl, '_blank');
             prompt('Copie o link:', shareUrl);
         });
     }
