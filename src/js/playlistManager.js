@@ -55,13 +55,6 @@ class PlaylistManager {
         const urlPlaylistName = urlParams.get('playlist');
         const urlPlaylistTimestamp = urlParams.get('timestamp');
         
-        console.log('DEBUG - URL params:', {
-            playlistCodes,
-            urlPlaylistName,
-            urlPlaylistTimestamp,
-            currentURL: window.location.href
-        });
-        
         if (playlistCodes) {
             // Atualizar estado local com playlist_codes
             this.currentPlaylist = playlistCodes.split(',').filter(code => code.trim());
@@ -69,14 +62,10 @@ class PlaylistManager {
             this.playlistTimestamp = urlPlaylistTimestamp || null;
             
             console.log(`✅ Playlist sincronizada com ${this.currentPlaylist.length} códigos de playlist_codes`);
-            console.log('DEBUG - Códigos carregados:', this.currentPlaylist);
-        } else {
-            console.log('ℹ️ Nenhum playlist_codes encontrado na URL');
         }
         // Nota: Removida a leitura de 'codes' - PlaylistManager trabalha apenas com 'playlist_codes'
         
         // Atualizar interface
-        console.log('DEBUG - Atualizando interface...');
         this.updateInterface();
         
         // Aguardar DOM estar pronto e depois atualizar botões
@@ -312,23 +301,12 @@ class PlaylistManager {
     }
 
     updateInterface() {
-        console.log('DEBUG - updateInterface chamado, playlist length:', this.currentPlaylist.length);
-        
         const countElement = document.querySelector('.playlist-count');
         const itemsContainer = document.getElementById('playlist-items');
         const nameInput = document.getElementById('playlist-name');
         const shareBtn = document.getElementById('playlist-share-btn');
         const clearBtn = document.getElementById('playlist-clear-btn');
         const toggleBtn = document.getElementById('playlist-toggle-btn');
-
-        console.log('DEBUG - Elementos encontrados:', {
-            countElement: !!countElement,
-            itemsContainer: !!itemsContainer,
-            nameInput: !!nameInput,
-            shareBtn: !!shareBtn,
-            clearBtn: !!clearBtn,
-            toggleBtn: !!toggleBtn
-        });
 
         if (countElement) {
             countElement.textContent = this.currentPlaylist.length;
@@ -353,10 +331,8 @@ class PlaylistManager {
 
         if (itemsContainer) {
             if (hasItems) {
-                console.log('DEBUG - Chamando displayPlaylistItems...');
                 this.displayPlaylistItems(itemsContainer);
             } else {
-                console.log('DEBUG - Exibindo playlist vazia...');
                 itemsContainer.innerHTML = `
                     <div class="empty-playlist">
                         <p>Nenhum louvor adicionado ainda</p>
@@ -412,16 +388,7 @@ class PlaylistManager {
 
         container.innerHTML = itemsHTML;
 
-        // Adicionar listeners para remoção
-        container.querySelectorAll('.playlist-item-remove').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const codigo = btn.dataset.codigo;
-                this.removeLouvor(codigo);
-            });
-        });
-
-        // Adicionar listeners para reordenação
+        // Adicionar listeners através de event delegation (será movido para bindReorderEvents)
         this.bindReorderEvents(container);
     }
 
@@ -435,10 +402,11 @@ class PlaylistManager {
         
         console.log('🧹 Listeners antigos removidos via cloneNode');
         
-        // Event delegation para setas de reordenação (em container limpo)
+        // Event delegation para setas de reordenação e botões de remoção (em container limpo)
         cleanContainer.addEventListener('click', (e) => {
             const target = e.target;
             const code = target.dataset.code;
+            const codigo = target.dataset.codigo;
             
             if (target.classList.contains('reorder-up')) {
                 e.preventDefault();
@@ -450,6 +418,11 @@ class PlaylistManager {
                 if (this.moveCodeDown(code)) {
                     console.log(`⬇️ Movendo ${code} para baixo`);
                 }
+            } else if (target.classList.contains('playlist-item-remove')) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('🗑️ Botão de remoção clicado para código:', codigo);
+                this.removeLouvor(codigo);
             }
         });
         
@@ -500,11 +473,13 @@ class PlaylistManager {
             
             this.updateInterface();
             this.updateAddButtons();
+            this.syncToURLManager();
             
             if (!this.playlistName) {
                 this.playlistName = this.generateDefaultName();
                 console.log('📝 Nome gerado:', this.playlistName);
                 this.updateInterface();
+                this.syncToURLManager();
             }
         } else {
             console.log('⚠️ Código já está na lista');
@@ -522,6 +497,7 @@ class PlaylistManager {
             
             this.updateInterface();
             this.updateAddButtons();
+            this.syncToURLManager();
         } else {
             console.log('⚠️ Código não encontrado na lista');
         }
