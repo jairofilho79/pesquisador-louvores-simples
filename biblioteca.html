@@ -34,16 +34,37 @@
     <!-- Scripts -->
     <script src="./metadata-consolidated.js"></script>
     <script src="src/js/pages-bar.js"></script>
+    <script src="debug-pages-bar.js"></script>
     
     <!-- Inicialização da Pages Bar -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
             try {
-                const pagesBar = new PagesBar({
-                    containerId: 'pages-bar-container',
-                    currentPage: 'biblioteca'
-                });
+                console.log('🚀 Inicializando Pages Bar na biblioteca...');
+                
+                // Criar instância do Pages Bar
+                const pagesBar = new PagesBar();
+                
+                // Inicializar
+                await pagesBar.init();
+                
+                // Disponibilizar globalmente para debug
+                window.pagesBar = pagesBar;
+                
                 console.log('✅ Pages Bar inicializada para biblioteca');
+                
+                // Debug: verificar se a página foi detectada corretamente
+                setTimeout(() => {
+                    console.log('🔍 Verificação pós-inicialização:');
+                    console.log('   - Página atual:', pagesBar.state.currentPage);
+                    console.log('   - Deveria ser: biblioteca');
+                    
+                    if (pagesBar.state.currentPage !== 'biblioteca') {
+                        console.warn('⚠️ Página incorreta detectada, forçando correção...');
+                        pagesBar.setActivePage('biblioteca');
+                    }
+                }, 1000);
+                
             } catch (error) {
                 console.error('❌ Erro ao inicializar Pages Bar:', error);
             }

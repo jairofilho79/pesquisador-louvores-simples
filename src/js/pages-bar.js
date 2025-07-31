@@ -15,7 +15,7 @@ class PagesBar {
             isInitialized: false,
             isMobile: false,
             isOpen: false,
-            currentPage: 'home',
+            currentPage: this.detectCurrentPageFromUrl(),
             pages: []
         };
         
@@ -28,6 +28,45 @@ class PagesBar {
         this.handleOverlayClick = this.handleOverlayClick.bind(this);
         this.handleKeyPress = this.handleKeyPress.bind(this);
         this.handlePageClick = this.handlePageClick.bind(this);
+    }
+
+    /**
+     * Detecta a página atual baseada na URL
+     */
+    detectCurrentPageFromUrl() {
+        try {
+            // Obter o nome do arquivo atual da URL
+            const currentPath = window.location.pathname;
+            let fileName = currentPath.split('/').pop() || 'index.html';
+            
+            // Se não há arquivo específico, assumir index.html
+            if (!fileName || fileName === '' || currentPath.endsWith('/')) {
+                fileName = 'index.html';
+            }
+            
+            console.log('🔍 Detectando página atual:', { 
+                currentPath, 
+                fileName,
+                href: window.location.href,
+                host: window.location.host
+            });
+            
+            // Mapear arquivo para ID da página
+            const pageMapping = {
+                'index.html': 'home',
+                '': 'home', // Raiz do domínio
+                'biblioteca.html': 'biblioteca'
+            };
+            
+            const detectedPage = pageMapping[fileName] || 'home';
+            console.log(`✅ Página detectada: ${detectedPage} (arquivo: ${fileName})`);
+            
+            return detectedPage;
+            
+        } catch (error) {
+            console.warn('⚠️ Erro ao detectar página atual, usando fallback:', error);
+            return 'home'; // Fallback seguro
+        }
     }
 
     /**
@@ -61,8 +100,8 @@ class PagesBar {
             // Configurar responsividade
             this.setupResponsive();
             
-            // Definir página ativa
-            this.setActivePage(this.state.currentPage);
+            // Re-detectar e validar página atual após carregar metadados
+            this.validateAndSetCurrentPage();
             
             // Forçar visibilidade inicial
             this.ensureVisibility();
@@ -221,6 +260,50 @@ class PagesBar {
     }
 
     /**
+     * Valida e define a página atual após carregar metadados
+     */
+    validateAndSetCurrentPage() {
+        try {
+            // Re-detectar página atual
+            const detectedPage = this.detectCurrentPageFromUrl();
+            
+            // Verificar se a página detectada existe nos metadados carregados
+            const pageExists = this.state.pages.some(page => page.id === detectedPage && page.ativo !== false);
+            
+            if (pageExists) {
+                console.log(`✅ Página '${detectedPage}' encontrada nos metadados, definindo como ativa`);
+                this.state.currentPage = detectedPage;
+            } else {
+                console.warn(`⚠️ Página '${detectedPage}' não encontrada ou inativa, mantendo '${this.state.currentPage}'`);
+                
+                // Se a página atual também não existe, usar a primeira página ativa
+                const currentExists = this.state.pages.some(page => page.id === this.state.currentPage && page.ativo !== false);
+                if (!currentExists) {
+                    const firstActivePage = this.state.pages.find(page => page.ativo !== false);
+                    if (firstActivePage) {
+                        console.log(`🔄 Usando primeira página ativa: ${firstActivePage.id}`);
+                        this.state.currentPage = firstActivePage.id;
+                    }
+                }
+            }
+            
+            // Definir página ativa no DOM
+            this.setActivePage(this.state.currentPage);
+            
+            console.log(`🎯 Página atual definida: ${this.state.currentPage}`);
+            
+        } catch (error) {
+            console.error('❌ Erro ao validar página atual:', error);
+            // Fallback: usar primeira página disponível
+            if (this.state.pages.length > 0) {
+                const fallbackPage = this.state.pages.find(page => page.ativo !== false) || this.state.pages[0];
+                this.state.currentPage = fallbackPage.id;
+                this.setActivePage(this.state.currentPage);
+            }
+        }
+    }
+
+    /**
      * Cria a estrutura DOM da barra
      */
     createDOMStructure() {
@@ -305,6 +388,12 @@ class PagesBar {
                     this.closeMobileMenu();
                 }
             }
+        });
+        
+        // Monitorar mudanças de URL (para SPAs futuras)
+        window.addEventListener('popstate', () => {
+            console.log('🔄 URL alterada, revalidando página atual...');
+            this.validateAndSetCurrentPage();
         });
     }
 
