@@ -1,7 +1,7 @@
 // Louvores mapeados automaticamente da pasta assets2
-// Gerado em: 2025-07-30T13:10:11.285Z
-// Versão: 20250730.fa3e6425
-// Total de louvores: 2093
+// Gerado em: 2025-08-08T21:05:51.888Z
+// Versão: 20250808.bcf47bba
+// Total de louvores: 2098
 
 window.louvoresAssets2 = [
   {
@@ -905,6 +905,34 @@ window.louvoresAssets2 = [
     "pdf": "Nesta vida o servo é provado - Cifra [23 11 2023].pdf"
   },
   {
+    "nome": "NOS ÁTRIOS DO SENHOR ENTRAMOS (Warley)",
+    "classificacao": "",
+    "categoria": "",
+    "numero": null,
+    "status": "A",
+    "caminhoCompleto": "assets2/Louvores Avulsos (Diversos)/[A] NOS ÁTRIOS DO SENHOR ENTRAMOS (Warley)",
+    "pdfs": [
+      "assets2/Louvores Avulsos (Diversos)/[A] NOS ÁTRIOS DO SENHOR ENTRAMOS (Warley)/Nos Átrios do Senhor Entramos - Alto Saxophone.pdf",
+      "assets2/Louvores Avulsos (Diversos)/[A] NOS ÁTRIOS DO SENHOR ENTRAMOS (Warley)/Nos Átrios do Senhor Entramos - Choir.pdf",
+      "assets2/Louvores Avulsos (Diversos)/[A] NOS ÁTRIOS DO SENHOR ENTRAMOS (Warley)/Nos Átrios do Senhor Entramos - Electric Bass.pdf",
+      "assets2/Louvores Avulsos (Diversos)/[A] NOS ÁTRIOS DO SENHOR ENTRAMOS (Warley)/Nos Átrios do Senhor Entramos - Flute.pdf",
+      "assets2/Louvores Avulsos (Diversos)/[A] NOS ÁTRIOS DO SENHOR ENTRAMOS (Warley)/Nos Átrios do Senhor Entramos - Keyboard.pdf",
+      "assets2/Louvores Avulsos (Diversos)/[A] NOS ÁTRIOS DO SENHOR ENTRAMOS (Warley)/Nos Átrios do Senhor Entramos - Soprano Saxophone.pdf",
+      "assets2/Louvores Avulsos (Diversos)/[A] NOS ÁTRIOS DO SENHOR ENTRAMOS (Warley)/Nos Átrios do Senhor Entramos - Tenor Saxophone.pdf",
+      "assets2/Louvores Avulsos (Diversos)/[A] NOS ÁTRIOS DO SENHOR ENTRAMOS (Warley)/Nos Átrios do Senhor Entramos - Trombone.pdf",
+      "assets2/Louvores Avulsos (Diversos)/[A] NOS ÁTRIOS DO SENHOR ENTRAMOS (Warley)/Nos Átrios do Senhor Entramos - Trumpet in Bb.pdf",
+      "assets2/Louvores Avulsos (Diversos)/[A] NOS ÁTRIOS DO SENHOR ENTRAMOS (Warley)/Nos Átrios do Senhor Entramos - Viola.pdf",
+      "assets2/Louvores Avulsos (Diversos)/[A] NOS ÁTRIOS DO SENHOR ENTRAMOS (Warley)/Nos Átrios do Senhor Entramos - Violin I.pdf",
+      "assets2/Louvores Avulsos (Diversos)/[A] NOS ÁTRIOS DO SENHOR ENTRAMOS (Warley)/Nos Átrios do Senhor Entramos - Violin II.pdf",
+      "assets2/Louvores Avulsos (Diversos)/[A] NOS ÁTRIOS DO SENHOR ENTRAMOS (Warley)/Nos Átrios do Senhor Entramos - Violoncello.pdf",
+      "assets2/Louvores Avulsos (Diversos)/[A] NOS ÁTRIOS DO SENHOR ENTRAMOS (Warley)/Nos Átrios do Senhor Entramos - [GRADE].pdf"
+    ],
+    "subfolders": [],
+    "hasSubfolders": false,
+    "totalFiles": 14,
+    "pdf": "Nos Átrios do Senhor Entramos - Alto Saxophone.pdf"
+  },
+  {
     "nome": "Num Ato Teu Senhor Sei Que És Fiel",
     "classificacao": "",
     "categoria": "",
@@ -1191,6 +1219,22 @@ window.louvoresAssets2 = [
     "hasSubfolders": false,
     "totalFiles": 17,
     "pdf": "Cristo Valerá - (Grade).pdf"
+  },
+  {
+    "nome": "Jesus voltará pra me Buscar (Preciosa Semente)",
+    "classificacao": "",
+    "categoria": "",
+    "numero": null,
+    "status": "P",
+    "caminhoCompleto": "assets2/Louvores Avulsos (Diversos)/[P] Jesus voltará pra me Buscar (Preciosa Semente)",
+    "pdfs": [
+      "assets2/Louvores Avulsos (Diversos)/[P] Jesus voltará pra me Buscar (Preciosa Semente)/Maranata - Sopro.pdf",
+      "assets2/Louvores Avulsos (Diversos)/[P] Jesus voltará pra me Buscar (Preciosa Semente)/Maranata - Vozes.pdf"
+    ],
+    "subfolders": [],
+    "hasSubfolders": false,
+    "totalFiles": 2,
+    "pdf": "Maranata - Sopro.pdf"
   },
   {
     "nome": "Louvar mesmo em provas",
@@ -1733,6 +1777,124 @@ window.louvoresAssets2 = [
     "hasSubfolders": false,
     "totalFiles": 7,
     "pdf": "Ele é Exaltado - Sax Alto 1.pdf"
+  },
+  {
+    "nome": "ENQUANTO EU VIVER",
+    "classificacao": "",
+    "categoria": "",
+    "numero": null,
+    "status": "V",
+    "caminhoCompleto": "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER",
+    "pdfs": [
+      "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Enquanto eu viver - Vozes.pdf"
+    ],
+    "subfolders": [
+      {
+        "name": "Instrumentos",
+        "path": "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos",
+        "pdfs": [
+          "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos/Enquanto eu viver - GRADE (Novo).pdf",
+          "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos/Enquanto eu viver - Trompete.pdf",
+          "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos/Enquanto eu viver-Cello.pdf",
+          "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos/Enquanto eu viver-Flauta.pdf",
+          "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos/Enquanto eu viver-Sax_Alto.pdf",
+          "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos/Enquanto eu viver-Sax_Tenor.pdf",
+          "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos/Enquanto eu viver-Trombone.pdf",
+          "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos/Enquanto eu viver-Trompete.pdf",
+          "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos/Enquanto eu viver-Viola.pdf",
+          "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos/Enquanto eu viver-Violino_I.pdf",
+          "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos/Enquanto eu viver-Violino_II.pdf"
+        ],
+        "totalFiles": 11,
+        "children": []
+      },
+      {
+        "name": "Instrumentos ajustados",
+        "path": "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos ajustados",
+        "pdfs": [
+          "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos ajustados/Enquanto eu viver - Grade.pdf"
+        ],
+        "totalFiles": 1,
+        "children": [
+          {
+            "name": "Partituras individuais",
+            "path": "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos ajustados/Partituras individuais",
+            "pdfs": [
+              "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos ajustados/Partituras individuais/Enquanto eu viver - Alto Sax.pdf",
+              "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos ajustados/Partituras individuais/Enquanto eu viver - Cello.pdf",
+              "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos ajustados/Partituras individuais/Enquanto eu viver - Flute.pdf",
+              "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos ajustados/Partituras individuais/Enquanto eu viver - Tenor Sax.pdf",
+              "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos ajustados/Partituras individuais/Enquanto eu viver - Trombone.pdf",
+              "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos ajustados/Partituras individuais/Enquanto eu viver - Trumpet in Bb.pdf",
+              "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos ajustados/Partituras individuais/Enquanto eu viver - Viola.pdf",
+              "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos ajustados/Partituras individuais/Enquanto eu viver - Violin I.pdf",
+              "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos ajustados/Partituras individuais/Enquanto eu viver - Violin II.pdf"
+            ],
+            "totalFiles": 9,
+            "children": []
+          }
+        ]
+      }
+    ],
+    "hasSubfolders": true,
+    "totalFiles": 22,
+    "pdf": "Enquanto eu viver - Vozes.pdf"
+  },
+  {
+    "nome": "Instrumentos ajustados",
+    "classificacao": "",
+    "categoria": "",
+    "numero": null,
+    "status": "",
+    "caminhoCompleto": "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos ajustados",
+    "pdfs": [
+      "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos ajustados/Enquanto eu viver - Grade.pdf"
+    ],
+    "subfolders": [
+      {
+        "name": "Partituras individuais",
+        "path": "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos ajustados/Partituras individuais",
+        "pdfs": [
+          "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos ajustados/Partituras individuais/Enquanto eu viver - Alto Sax.pdf",
+          "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos ajustados/Partituras individuais/Enquanto eu viver - Cello.pdf",
+          "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos ajustados/Partituras individuais/Enquanto eu viver - Flute.pdf",
+          "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos ajustados/Partituras individuais/Enquanto eu viver - Tenor Sax.pdf",
+          "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos ajustados/Partituras individuais/Enquanto eu viver - Trombone.pdf",
+          "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos ajustados/Partituras individuais/Enquanto eu viver - Trumpet in Bb.pdf",
+          "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos ajustados/Partituras individuais/Enquanto eu viver - Viola.pdf",
+          "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos ajustados/Partituras individuais/Enquanto eu viver - Violin I.pdf",
+          "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos ajustados/Partituras individuais/Enquanto eu viver - Violin II.pdf"
+        ],
+        "totalFiles": 9,
+        "children": []
+      }
+    ],
+    "hasSubfolders": true,
+    "totalFiles": 10,
+    "pdf": "Enquanto eu viver - Grade.pdf"
+  },
+  {
+    "nome": "Partituras individuais",
+    "classificacao": "",
+    "categoria": "",
+    "numero": null,
+    "status": "",
+    "caminhoCompleto": "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos ajustados/Partituras individuais",
+    "pdfs": [
+      "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos ajustados/Partituras individuais/Enquanto eu viver - Alto Sax.pdf",
+      "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos ajustados/Partituras individuais/Enquanto eu viver - Cello.pdf",
+      "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos ajustados/Partituras individuais/Enquanto eu viver - Flute.pdf",
+      "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos ajustados/Partituras individuais/Enquanto eu viver - Tenor Sax.pdf",
+      "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos ajustados/Partituras individuais/Enquanto eu viver - Trombone.pdf",
+      "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos ajustados/Partituras individuais/Enquanto eu viver - Trumpet in Bb.pdf",
+      "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos ajustados/Partituras individuais/Enquanto eu viver - Viola.pdf",
+      "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos ajustados/Partituras individuais/Enquanto eu viver - Violin I.pdf",
+      "assets2/Louvores Avulsos (Diversos)/[V] ENQUANTO EU VIVER/Instrumentos ajustados/Partituras individuais/Enquanto eu viver - Violin II.pdf"
+    ],
+    "subfolders": [],
+    "hasSubfolders": false,
+    "totalFiles": 9,
+    "pdf": "Enquanto eu viver - Alto Sax.pdf"
   },
   {
     "nome": "Exaltado",
@@ -46029,10 +46191,10 @@ window.louvoresAssets2 = [
 
 // Metadados da versão
 window.louvoresAssets2Meta = {
-    version: "20250730.fa3e6425",
-    generatedAt: "2025-07-30T13:10:11.291Z",
-    totalLouvores: 2093,
-    contentHash: "fa3e6425"
+    version: "20250808.bcf47bba",
+    generatedAt: "2025-08-08T21:05:51.892Z",
+    totalLouvores: 2098,
+    contentHash: "bcf47bba"
 };
 
 // Função para carregar os dados (retrocompatibilidade)

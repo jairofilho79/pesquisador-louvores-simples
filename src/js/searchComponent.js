@@ -76,6 +76,9 @@ class SearchComponent {
             // Não resetar os filtros, apenas limpar resultados
             // Os filtros devem permanecer como estão
         }
+        
+        // Focar no input após limpar
+        this.searchInput.focus();
     }
 
     handleSearch() {
