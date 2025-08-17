@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSMD PoC Demo - Functionality Preview</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Demo-specific styles */
+        .demo-notice {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .demo-sheet {
+            background: #f8f9fa;
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .demo-sheet h3 {
+            color: #495057;
+            margin-bottom: 15px;
+        }
+        
+        .demo-sheet p {
+            color: #6c757d;
+            max-width: 500px;
+            line-height: 1.6;
+        }
+        
+        .music-notation-demo {
+            font-family: 'Times New Roman', serif;
+            font-size: 2rem;
+            margin: 20px 0;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>OSMD Proof of Concept - Demo Mode</h1>
+            <p>Demonstrating UI functionality and interaction patterns</p>
+        </header>
+
+        <main>
+            <div class="demo-notice">
+                <strong>📢 Demo Mode:</strong> This demonstrates the complete UI functionality. 
+                The actual OSMD integration requires a proper web server with CDN access.
+            </div>
+
+            <!-- Controls Section -->
+            <section class="controls">
+                <div class="control-group">
+                    <label for="sheet-select">Select Music Sheet:</label>
+                    <select id="sheet-select">
+                        <option value="">Choose a sample...</option>
+                        <option value="simple-melody">Simple Melody</option>
+                        <option value="chord-progression">Chord Progression</option>
+                        <option value="multi-staff">Multi-Staff Composition</option>
+                    </select>
+                </div>
+                
+                <div class="control-buttons">
+                    <button id="render-btn" disabled>Render Sheet</button>
+                    <button id="clear-btn" disabled>Clear</button>
+                </div>
+            </section>
+
+            <!-- Loading Indicator -->
+            <div id="loading" class="loading hidden">
+                <div class="loading-spinner"></div>
+                <p>Rendering music sheet...</p>
+            </div>
+
+            <!-- Error Display -->
+            <div id="error" class="error hidden">
+                <h3>Error</h3>
+                <p id="error-message"></p>
+            </div>
+
+            <!-- Music Sheet Container -->
+            <section class="sheet-container">
+                <div id="osmd-container" class="osmd-display">
+                    <div class="placeholder">
+                        <div class="placeholder-icon">🎼</div>
+                        <h3>No sheet selected</h3>
+                        <p>Choose a sample music sheet from the dropdown above to begin</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Info Panel -->
+            <section class="info-panel">
+                <h3>Current Sheet Information</h3>
+                <div id="sheet-info" class="sheet-info">
+                    <p>Select a sheet to view details</p>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Built with <a href="https://opensheetmusicdisplay.org/" target="_blank">OpenSheetMusicDisplay</a></p>
+        </footer>
+    </div>
+
+    <script src="samples/musicxml-samples.js"></script>
+    <script>
+        // Demo version that shows UI functionality without OSMD
+        document.addEventListener('DOMContentLoaded', () => {
+            const elements = {
+                sheetSelect: document.getElementById('sheet-select'),
+                renderBtn: document.getElementById('render-btn'),
+                clearBtn: document.getElementById('clear-btn'),
+                loading: document.getElementById('loading'),
+                osmdContainer: document.getElementById('osmd-container'),
+                sheetInfo: document.getElementById('sheet-info')
+            };
+
+            // Sheet selection handler
+            elements.sheetSelect.addEventListener('change', (e) => {
+                const selectedValue = e.target.value;
+                elements.renderBtn.disabled = !selectedValue;
+                
+                if (selectedValue) {
+                    updateSheetInfo(selectedValue);
+                } else {
+                    clearSheetInfo();
+                }
+            });
+
+            // Render button handler
+            elements.renderBtn.addEventListener('click', () => {
+                const selectedSheet = elements.sheetSelect.value;
+                if (selectedSheet) {
+                    renderDemoSheet(selectedSheet);
+                }
+            });
+
+            // Clear button handler
+            elements.clearBtn.addEventListener('click', () => {
+                clearSheet();
+            });
+
+            function updateSheetInfo(sheetKey) {
+                const sheetData = window.SAMPLE_MUSICXML[sheetKey];
+                if (!sheetData) return;
+
+                elements.sheetInfo.innerHTML = `
+                    <p><strong>Title:</strong> ${sheetData.title}</p>
+                    <p><strong>Description:</strong> ${sheetData.description}</p>
+                    <p><strong>Complexity:</strong> ${sheetData.complexity}</p>
+                    <p><strong>Musical Elements:</strong></p>
+                    <ul style="margin-left: 20px; line-height: 1.6;">
+                        ${sheetData.elements.map(element => `<li>${element}</li>`).join('')}
+                    </ul>
+                `;
+            }
+
+            function clearSheetInfo() {
+                elements.sheetInfo.innerHTML = '<p>Select a sheet to view details</p>';
+            }
+
+            function renderDemoSheet(sheetKey) {
+                const sheetData = window.SAMPLE_MUSICXML[sheetKey];
+                if (!sheetData) return;
+
+                // Show loading
+                elements.loading.classList.remove('hidden');
+                elements.renderBtn.disabled = true;
+
+                setTimeout(() => {
+                    // Hide loading
+                    elements.loading.classList.add('hidden');
+                    elements.renderBtn.disabled = false;
+                    elements.clearBtn.disabled = false;
+
+                    // Show demo sheet
+                    elements.osmdContainer.innerHTML = `
+                        <div class="demo-sheet fade-in">
+                            <h3>🎵 ${sheetData.title}</h3>
+                            <div class="music-notation-demo">♪ ♫ ♪ ♫ ♪ ♫ ♪ ♫</div>
+                            <p><strong>Demo:</strong> This shows where the actual music notation would appear. 
+                            OSMD would render the full musical score with proper staff lines, notes, 
+                            clefs, key signatures, and all musical elements defined in the MusicXML.</p>
+                            <p><strong>Features demonstrated:</strong> ${sheetData.elements.join(', ')}</p>
+                        </div>
+                    `;
+
+                    elements.osmdContainer.classList.add('osmd-loaded');
+                }, 1500);
+            }
+
+            function clearSheet() {
+                elements.osmdContainer.innerHTML = `
+                    <div class="placeholder">
+                        <div class="placeholder-icon">🎼</div>
+                        <h3>No sheet selected</h3>
+                        <p>Choose a sample music sheet from the dropdown above to begin</p>
+                    </div>
+                `;
+                
+                elements.osmdContainer.classList.remove('osmd-loaded');
+                elements.clearBtn.disabled = true;
+                elements.sheetSelect.value = '';
+                elements.renderBtn.disabled = true;
+                clearSheetInfo();
+            }
+        });
+    </script>
+</body>
+</html>
