@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSMD Proof of Concept</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- OpenSheetMusicDisplay CDN -->
+    <script>
+        // Try loading OSMD from multiple CDN sources
+        function loadOSMD() {
+            const cdnSources = [
+                'https://cdn.jsdelivr.net/npm/opensheetmusicdisplay@1.7.3/build/opensheetmusicdisplay.min.js',
+                'https://unpkg.com/opensheetmusicdisplay@1.7.3/build/opensheetmusicdisplay.min.js'
+            ];
+            
+            let currentIndex = 0;
+            
+            function tryNextCDN() {
+                if (currentIndex >= cdnSources.length) {
+                    console.error('All CDN sources failed. OSMD library could not be loaded.');
+                    const errorEl = document.getElementById('error-message');
+                    const errorContainer = document.getElementById('error');
+                    if (errorEl && errorContainer) {
+                        errorEl.textContent = 'Failed to load OpenSheetMusicDisplay library from CDN. Please check your internet connection or try the demo.html version.';
+                        errorContainer.classList.remove('hidden');
+                    }
+                    return;
+                }
+                
+                const script = document.createElement('script');
+                script.src = cdnSources[currentIndex];
+                script.onload = () => {
+                    console.log(`OSMD loaded successfully from: ${cdnSources[currentIndex]}`);
+                };
+                script.onerror = () => {
+                    console.log(`Failed to load from: ${cdnSources[currentIndex]}`);
+                    currentIndex++;
+                    setTimeout(tryNextCDN, 100);
+                };
+                document.head.appendChild(script);
+            }
+            
+            tryNextCDN();
+        }
+        
+        // Load OSMD when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadOSMD);
+        } else {
+            loadOSMD();
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>OpenSheetMusicDisplay Proof of Concept</h1>
+            <p>Demonstrating OSMD integration for rendering music sheets from MusicXML data</p>
+        </header>
+
+        <main>
+            <!-- Controls Section -->
+            <section class="controls">
+                <div class="control-group">
+                    <label for="sheet-select">Select Music Sheet:</label>
+                    <select id="sheet-select">
+                        <option value="">Choose a sample...</option>
+                        <option value="simple-melody">Simple Melody</option>
+                        <option value="chord-progression">Chord Progression</option>
+                        <option value="multi-staff">Multi-Staff Composition</option>
+                    </select>
+                </div>
+                
+                <div class="control-buttons">
+                    <button id="render-btn" disabled>Render Sheet</button>
+                    <button id="clear-btn" disabled>Clear</button>
+                </div>
+            </section>
+
+            <!-- Loading Indicator -->
+            <div id="loading" class="loading hidden">
+                <div class="loading-spinner"></div>
+                <p>Rendering music sheet...</p>
+            </div>
+
+            <!-- Error Display -->
+            <div id="error" class="error hidden">
+                <h3>Error</h3>
+                <p id="error-message"></p>
+            </div>
+
+            <!-- Music Sheet Container -->
+            <section class="sheet-container">
+                <div id="osmd-container" class="osmd-display">
+                    <div class="placeholder">
+                        <div class="placeholder-icon">🎼</div>
+                        <h3>No sheet selected</h3>
+                        <p>Choose a sample music sheet from the dropdown above to begin</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Info Panel -->
+            <section class="info-panel">
+                <h3>Current Sheet Information</h3>
+                <div id="sheet-info" class="sheet-info">
+                    <p>Select a sheet to view details</p>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Built with <a href="https://opensheetmusicdisplay.org/" target="_blank">OpenSheetMusicDisplay</a></p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
